@@ -1,7 +1,7 @@
 import Square from "../components/Square";
 import useXYClaim from "../hooks/useXYClaim";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
-import { XYContractAddress, MAX_SIZE, getRandomNullIndex } from "../util";
+import { XYContractAddress, MAX_SIZE } from "../util";
 import React, { useState, useReducer, useEffect } from 'react';
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
@@ -21,18 +21,6 @@ const Board = () => {
 
   var rowsLoaded = 0;
   const [rowCount, setRowCount] = useState(0);
-
-  const handleRandomClaim = async () => {
-    var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
-    try {
-      if (tokenId >= 0) {
-        const sig = await claim((tokenId - 1) % MAX_SIZE, Math.floor((tokenId - 1) / MAX_SIZE));
-      } else {
-      }
-    } catch (error) {
-      // Do nothing
-    }
-  }
 
   const handleClaim = async (x, y) => {
     try {
@@ -118,25 +106,17 @@ const Board = () => {
 
   return (
     <div>
-      {rowCount != MAX_SIZE && (
-        <div className="status">
+      <div className="status">
+        {rowCount != MAX_SIZE && (
           <p style={{color: "red"}}>
           {status}{rowCount*100/MAX_SIZE}{"%"}<br />
           (Page may be slow while loading on-chain data. Hang tight!)
           </p>
-          <button className="ui medium disabled button">
-            Can't decide? Claim a random X,Y Coordinate
-          </button>
-        </div>
-      )}
-      {rowCount == MAX_SIZE && (
-        <div className="status">
+        )}
+        {rowCount == MAX_SIZE && (
           <XYTotalSupply />
-          <button className="ui medium green button" onClick={() => handleRandomClaim()}>
-            Can't decide? Claim a random X,Y Coordinate
-          </button>
-        </div>
-      )}
+        )}
+      </div>
       <div className="game-board">
         {squaresRendered}
       </div>

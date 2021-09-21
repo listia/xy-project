@@ -54,6 +54,32 @@ export function stringToColor(str) {
     return color;
 }
 
+// Returns a random index from the array where the value is null
+// Or -1 if none are found
+export function getRandomNullIndex(arr) {
+  var randomIndex = Math.floor(Math.random() * arr.length);
+
+  var i = randomIndex;
+  while (true) {
+    if (arr[i] == null) {
+      return i;
+    } else {
+      // move forward or wrap around
+      if (i < arr.length-1) {
+        i++;
+      } else {
+        i = 0;
+      }
+    }
+    // fully wrapped around, no nulls are found
+    if (i == randomIndex) {
+      return -1;
+    }
+  }
+
+  return i;
+}
+
 export const parseBalance = (
   value: BigNumberish,
   decimals = 18,
