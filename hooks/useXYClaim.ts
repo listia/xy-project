@@ -8,7 +8,10 @@ export default function useXYClaim() {
   const contract = useXYContract(XYContractAddress);
 
   return async (x, y) => {
-    const result = await contract.claim(x, y);
+    var overrideOptions = {
+      gasLimit: 160000
+    };
+    const result = await contract.claim(x, y, overrideOptions);
     return result;
   }
 }
