@@ -125,7 +125,7 @@ const Board = () => {
           (Page may be slow while loading on-chain data. Hang tight!)
           </p>
           <button className="ui medium disabled button">
-            Can't decide? Claim a random X,Y Coordinate
+            Can&#39;t decide? Claim a random X,Y Coordinate
           </button>
         </div>
       )}
@@ -133,7 +133,7 @@ const Board = () => {
         <div className="status">
           <XYTotalSupply />
           <button className="ui medium green button" onClick={() => handleRandomClaim()}>
-            Can't decide? Claim a random X,Y Coordinate
+            Can&#39;t decide? Claim a random X,Y Coordinate
           </button>
         </div>
       )}
