@@ -6,12 +6,18 @@ import React, { useState, useReducer, useEffect } from 'react';
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import XYTotalSupply from "../components/XYTotalSupply";
+import * as rax from 'retry-axios';
+import axios from "axios";
 
 const Board = () => {
-  const status = 'Loading X,Y Coordinates from Ethereum...';
   const claim = useXYClaim( );
   const ownerOf = useXYOwnerOf();
-  const { account } = useWeb3React<Web3Provider>();
+
+  const { account, library } = useWeb3React();
+  const isConnected = typeof account === "string" && !!library;
+
+  const getBoardURL = '/api/getBoard';
+  const updateCoordinateURL = '/api/updateCoordinate';
 
   var squaresLoaded = Array(MAX_SIZE*MAX_SIZE).fill(null);
   const [squares, setSquares] = useReducer(reducer, null, function getInitialState(filler) {
@@ -21,6 +27,8 @@ const Board = () => {
 
   var rowsLoaded = 0;
   const [rowCount, setRowCount] = useState(0);
+
+  const [checkOwnerInterval, setCheckOwnerInterval] = useState(0);
 
   const handleRandomClaim = async () => {
     var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
@@ -44,31 +52,92 @@ const Board = () => {
     // Can't set squaresLoaded here for some reason. Seems like another copy of it. TBD
   };
 
+  const loadCachedBoard = async () => {
+    const interceptorId = rax.attach(); // retry logic for axios
+    axios({
+      method: 'GET',
+      url: getBoardURL,
+      raxConfig: {
+        retry: 10
+      }
+    }).then((response) => {
+      response.data.coordinates.map((coordinate) => {
+        // indexes into coordinate array
+        // 0: token_id
+        // 1: owner
+        // 2: color
+        // 3: image_uri
+        squaresLoaded[coordinate[0]] = coordinate[1];
+      });
+
+      // update the UI right away after cached board is loaded
+      rowsLoaded = MAX_SIZE;
+      updateSquares();
+
+      // sync with on-chain data soon after cached board is loaded
+      setTimeout(() => {
+        updateOwners();
+      }, 30000);
+
+      // also check for new owners every 10 minutes
+      const intervalId = setInterval(() => {
+        updateOwners();
+      }, 600000);
+      setCheckOwnerInterval(intervalId);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+
+  const updateCachedCoordinate = async (tokenId, owner) => {
+    axios({
+      method: 'POST',
+      url: updateCoordinateURL,
+      data: {
+        token_id: tokenId,
+        owner: owner
+      },
+    }).then((response) => {
+      console.log("updateCachedCoordinate result: " + JSON.stringify(response.data, null, 2))
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+
   function updateOwners() {
-    rowsLoaded = 0;
-    for (let y = 0; y < MAX_SIZE; y++) {
-      for (let x = 0; x < MAX_SIZE; x++) {
-        checkOwner(x,y);
+    if (isConnected) {
+      rowsLoaded = 0;
+      for (let y = 0; y < MAX_SIZE; y++) {
+        for (let x = 0; x < MAX_SIZE; x++) {
+          checkOwner(x,y);
+        }
       }
     }
   }
 
+  function updateSquares() {
+    setSquares({ type: 'set', newsquares: squaresLoaded});
+    setRowCount(rowsLoaded);
+  }
+
   useEffect(() => {
-    // check for new owners after 2 second delay, and then every 10 minutes
-    const timer = setTimeout(() => {
-      updateOwners();
-    }, 2000);
-    const checkOwnerInterval = setInterval(() => {
-      updateOwners();
-    }, 600000);
+    // don't load right away, in case metamask is connecting
+    // TODO: make this deterministic, so it waits for
+    // metamask to connect or not
+    const loadTimeout = setTimeout(() => {
+      loadCachedBoard();
+    }, 5000);
 
     // update board UI every 3 seconds
     const boardInterval = setInterval(() => {
-      setSquares({ type: 'set', newsquares: squaresLoaded});
-      setRowCount(rowsLoaded);
+      updateSquares();
     }, 3000);
 
-    return () => {clearInterval(checkOwnerInterval); clearInterval(boardInterval);}
+    return () => {
+      clearInterval(boardInterval);
+      clearInterval(checkOwnerInterval);
+      clearTimeout(loadTimeout);
+    }
   }, []);
 
   function reducer(squares, action) {
@@ -92,6 +161,7 @@ const Board = () => {
 
       if (owner && squaresLoaded[(y*MAX_SIZE)+x] != owner) {
         squaresLoaded[(y*MAX_SIZE)+x] = owner;
+        updateCachedCoordinate((y*MAX_SIZE)+x, owner);
       }
     } catch (error) {
       // x,y token not minted yet, which is ok
@@ -106,7 +176,7 @@ const Board = () => {
   }
 
   function renderSquare(x, y) {
-    return <Square x={x} y={y} owner={squares[(y*MAX_SIZE)+x]} handleClaim={handleClaim} />;
+    return <Square x={x} y={y} owner={squares[(y*MAX_SIZE)+x]} handleClaim={handleClaim} key={`sq-${x}-${y}`} />;
   }
 
   var squaresRendered = [];
@@ -121,15 +191,17 @@ const Board = () => {
       {rowCount != MAX_SIZE && (
         <div className="status">
           <p style={{color: "red"}}>
-          {status}{rowCount*100/MAX_SIZE}{"%"}<br />
-          (Page may be slow while loading on-chain data. Hang tight!)
+            Updating X,Y Coordinates...{rowCount*100/MAX_SIZE}{"%"}<br />
+            (Page may be slow while loading on-chain data. Hang tight!)
           </p>
-          <button className="ui medium disabled button">
-            Can&#39;t decide? Claim a random X,Y Coordinate
-          </button>
+          {isConnected && (
+            <button className="ui medium disabled button">
+              Can&#39;t decide? Claim a random X,Y Coordinate
+            </button>
+          )}
         </div>
       )}
-      {rowCount == MAX_SIZE && (
+      {isConnected && rowCount == MAX_SIZE && (
         <div className="status">
           <XYTotalSupply />
           <button className="ui medium green button" onClick={() => handleRandomClaim()}>
