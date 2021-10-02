@@ -28,7 +28,7 @@ const Board = () => {
   var rowsLoaded = 0;
   const [rowCount, setRowCount] = useState(0);
 
-  const [checkOwnerInterval, setCheckOwnerInterval] = useState(0);
+  const [checkOwnerInterval, setCheckOwnerInterval] = useState(null);
 
   const handleRandomClaim = async () => {
     var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
@@ -61,6 +61,7 @@ const Board = () => {
         retry: 10
       }
     }).then((response) => {
+      // @ts-ignore
       response.data.coordinates.map((coordinate) => {
         // indexes into coordinate array
         // 0: token_id
