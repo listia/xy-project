@@ -30,6 +30,7 @@ body {
   border: 1px solid #108e36;
   box-sizing: border-box;
   background-color: #1da045;
+  background-size: contain;
 }
 .claimed {
   border-color: #000;
@@ -51,10 +52,10 @@ body {
 }
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 88px;
+  width: 188px;
   bottom: 150%;
   left: 50%;
-  margin-left: -40px;
+  margin-left: -94px;
   background-color: black;
   color: #fff;
   text-align: center;

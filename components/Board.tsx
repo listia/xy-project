@@ -16,6 +16,7 @@ const Board = () => {
   const { account, library } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
 
+  const getAssetsURL = '/api/getAssets';
   const getBoardURL = '/api/getBoard';
   const updateCoordinateURL = '/api/updateCoordinate';
 
@@ -27,6 +28,9 @@ const Board = () => {
 
   var rowsLoaded = 0;
   const [rowCount, setRowCount] = useState(0);
+
+  const MAX_ASSETS = 30;
+  const [assetCount, setAssetCount] = useState(0);
 
   const [checkOwnerInterval, setCheckOwnerInterval] = useState(null);
 
@@ -52,6 +56,61 @@ const Board = () => {
     // Can't set squaresLoaded here for some reason. Seems like another copy of it. TBD
   };
 
+  // toggle image on the square
+  const handleToggle = async (x, y) => {
+    let response = await axios({
+      method: 'GET',
+      url: getAssetsURL,
+      params: { owner: account,
+                limit: MAX_ASSETS},
+      raxConfig: {
+        retry: 2
+      }
+    });
+    // @ts-ignore
+    let assets = response.data.assets;
+    if (assets) {
+      setAssetCount(assetCount + 1);
+      if (assetCount >= assets.length || !assets[assetCount]) {
+        setAssetCount(0);
+      }
+      if (assets[assetCount]) {
+        setSquares({ type: 'update',
+                     index: (y*MAX_SIZE)+x,
+                     owner: squares[(y*MAX_SIZE)+x].owner,
+                     color: squares[(y*MAX_SIZE)+x].color,
+                     image_uri: assets[assetCount].image_url});
+        updateCachedCoordinate((y*MAX_SIZE)+x,
+                               squares[(y*MAX_SIZE)+x].owner,
+                               squares[(y*MAX_SIZE)+x].color,
+                               squares[(y*MAX_SIZE)+x].image_uri);
+      }
+    }
+  };
+
+  const loadAssets = async (squareIndex, owner) => {
+    const interceptorId = rax.attach(); // retry logic for axios
+    axios({
+      method: 'GET',
+      url: getAssetsURL,
+      params: { owner: owner,
+                limit: MAX_ASSETS},
+      raxConfig: {
+        retry: 2
+      }
+    }).then((response) => {
+      // @ts-ignore
+      squaresLoaded[squareIndex].image_uri = response.data.assets[0].image_url;
+      updateCachedCoordinate(squareIndex,
+                             squaresLoaded[squareIndex].owner,
+                             squaresLoaded[squareIndex].color,
+                             // @ts-ignore
+                             response.data.assets[0].image_url);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+
   const loadCachedBoard = async () => {
     const interceptorId = rax.attach(); // retry logic for axios
     axios({
@@ -68,7 +127,9 @@ const Board = () => {
         // 1: owner
         // 2: color
         // 3: image_uri
-        squaresLoaded[coordinate[0]] = coordinate[1];
+        squaresLoaded[coordinate[0]] = {"owner": coordinate[1],
+                                        "color": coordinate[2],
+                                        "image_uri": coordinate[3]};
       });
 
       // update the UI right away after cached board is loaded
@@ -90,13 +151,15 @@ const Board = () => {
     })
   };
 
-  const updateCachedCoordinate = async (tokenId, owner) => {
+  const updateCachedCoordinate = async (tokenId, owner, color, image_uri) => {
     axios({
       method: 'POST',
       url: updateCoordinateURL,
       data: {
         token_id: tokenId,
-        owner: owner
+        owner: owner,
+        color: color,
+        image_uri: image_uri
       },
     }).then((response) => {
       console.log("updateCachedCoordinate result: " + JSON.stringify(response.data, null, 2))
@@ -144,7 +207,9 @@ const Board = () => {
   function reducer(squares, action) {
     switch (action.type) {
       case 'update':
-        squares[action.index] = action.owner;
+        squares[action.index].owner = action.owner;
+        squares[action.index].color = action.color;
+        squares[action.index].image_uri = action.image_uri;
         return [...squares];
       case 'set':
         return [...action.newsquares];
@@ -160,9 +225,10 @@ const Board = () => {
         rowsLoaded += 1;
       }
 
-      if (owner && squaresLoaded[(y*MAX_SIZE)+x] != owner) {
-        squaresLoaded[(y*MAX_SIZE)+x] = owner;
-        updateCachedCoordinate((y*MAX_SIZE)+x, owner);
+      if (owner && squaresLoaded[(y*MAX_SIZE)+x].owner != owner) {
+        squaresLoaded[(y*MAX_SIZE)+x].owner = owner;
+        updateCachedCoordinate((y*MAX_SIZE)+x, owner, squaresLoaded[(y*MAX_SIZE)+x].color, squaresLoaded[(y*MAX_SIZE)+x].image_uri);
+        loadAssets((y*MAX_SIZE)+x, owner);
       }
     } catch (error) {
       // x,y token not minted yet, which is ok
@@ -177,7 +243,7 @@ const Board = () => {
   }
 
   function renderSquare(x, y) {
-    return <Square x={x} y={y} owner={squares[(y*MAX_SIZE)+x]} handleClaim={handleClaim} key={`sq-${x}-${y}`} />;
+    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} />;
   }
 
   var squaresRendered = [];

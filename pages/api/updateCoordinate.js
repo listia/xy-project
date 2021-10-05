@@ -9,7 +9,7 @@ export default async (req, res) => {
       // update OR create a coordinate based on the token_id
       q.Let({
           match: q.Match(q.Index('unique_token_id'), req.body.token_id),
-          data: { token_id: req.body.token_id, owner: req.body.owner }
+          data: { token_id: req.body.token_id, owner: req.body.owner, color: req.body.color, image_uri: req.body.image_uri }
         },
         q.If(
           q.Exists(q.Var('match')),
