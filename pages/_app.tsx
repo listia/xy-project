@@ -1,8 +1,8 @@
 import { Web3ReactProvider } from "@web3-react/core";
 import type { AppProps } from "next/app";
 import getLibrary from "../getLibrary";
-import 'semantic-ui-css/semantic.min.css';
-import "../styles/globals.css";
+import "semantic-ui-css/semantic.min.css";
+import "../styles/globals.scss";
 
 function NextWeb3App({ Component, pageProps }: AppProps) {
   return (
