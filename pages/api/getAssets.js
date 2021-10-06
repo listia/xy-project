@@ -10,7 +10,7 @@ export default async (req, res) => {
       url: openseaAssetURL,
       params: { owner: req.query.owner,
                 limit: req.query.limit },
-      headers: {'X-API-KEY': process.env.OPENSEA_API_KEY}
+      headers: {'X-API-KEY': process.env.OPENSEA_API_KEY ? process.env.OPENSEA_API_KEY : ""}
     }).then((response) => {
       console.log("getAssets result: " + response.data);
       res.status(200).json({ assets: response.data.assets });
