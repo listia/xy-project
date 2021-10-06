@@ -41,6 +41,7 @@ function Home() {
           <Image
             src="https://storage.opensea.io/files/98692044b0fc95750f5daf58d62f957d.svg"
             alt=""
+            height={160}
             width={160}
           />
         </a>
@@ -53,6 +54,7 @@ function Home() {
           <Image
             src="https://storage.opensea.io/files/0c834b4ba5c297a97acd5c6b55999585.svg"
             alt=""
+            height={160}
             width={160}
           />
         </a>
@@ -65,6 +67,7 @@ function Home() {
           <Image
             src="https://storage.opensea.io/files/9932a81ae30a4785940cbe8df8a61945.svg"
             alt=""
+            height={160}
             width={160}
           />
         </a>
