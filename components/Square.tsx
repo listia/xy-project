@@ -23,7 +23,7 @@ const Square = ({x, y, square, handleClaim, handleToggle }) => {
             <br/>
             {square && square.image_uri && (
               <>
-              <img src={square.image_uri} width="180" />
+              <img src={square.image_uri} width="128" />
               <br/>
               </>
             )}

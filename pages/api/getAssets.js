@@ -7,7 +7,6 @@ const getAccess = async (req, res) => {
 
   if (req.method == "GET" && req.query.owner) {
     console.log("getting Assets from opensea...");
-
     try {
       await axios({
         method: "GET",
@@ -16,8 +15,12 @@ const getAccess = async (req, res) => {
           owner: req.query.owner,
           limit: req.query.limit,
         },
+        headers: {
+          'X-API-KEY': process.env.OPENSEA_API_KEY 
+            ? process.env.OPENSEA_API_KEY 
+            : ""
+        },
       });
-
       console.log("getAssets result: " + response.data);
       res.status(200).json({ assets: response.data.assets });
     } catch (error) {

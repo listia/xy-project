@@ -79,7 +79,7 @@ const Board = () => {
                      index: (y*MAX_SIZE)+x,
                      owner: squares[(y*MAX_SIZE)+x].owner,
                      color: squares[(y*MAX_SIZE)+x].color,
-                     image_uri: assets[assetCount].image_url});
+                     image_uri: assets[assetCount].image_thumbnail_url});
         updateCachedCoordinate((y*MAX_SIZE)+x,
                                squares[(y*MAX_SIZE)+x].owner,
                                squares[(y*MAX_SIZE)+x].color,
@@ -100,12 +100,12 @@ const Board = () => {
       }
     }).then((response) => {
       // @ts-ignore
-      squaresLoaded[squareIndex].image_uri = response.data.assets[0].image_url;
+      squaresLoaded[squareIndex].image_uri = response.data.assets[0].image_thumbnail_url;
       updateCachedCoordinate(squareIndex,
                              squaresLoaded[squareIndex].owner,
                              squaresLoaded[squareIndex].color,
                              // @ts-ignore
-                             response.data.assets[0].image_url);
+                             response.data.assets[0].image_thumbnail_url);
     }).catch(error => {
       console.log(error);
     })

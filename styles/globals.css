@@ -53,10 +53,10 @@ body {
 }
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 188px;
+  width: 150px;
   bottom: 150%;
   left: 50%;
-  margin-left: -94px;
+  margin-left: -75px;
   background-color: black;
   color: #fff;
   text-align: center;
