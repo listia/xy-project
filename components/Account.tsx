@@ -23,8 +23,10 @@ const Account = ({ triedToEagerConnect }: Props) => {
   // initialize metamask onboarding
   const onboarding = useRef<MetaMaskOnboarding>();
 
-  useLayoutEffect(() => {
-    onboarding.current = new MetaMaskOnboarding();
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      onboarding.current = new MetaMaskOnboarding();
+    }
   }, []);
 
   // manage connecting state for injected connector

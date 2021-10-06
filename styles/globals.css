@@ -1,3 +1,4 @@
+:global
 html,
 body {
   padding: 0;
@@ -88,6 +89,5 @@ body {
 }
 .terms {
   width: 80%;
-  align: center;
   margin: auto;
 }

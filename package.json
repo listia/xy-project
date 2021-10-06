@@ -33,10 +33,12 @@
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^7.0.1",
+    "@types/node": "^16.10.2",
     "@types/react": "^17.0.19",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
     "ethers": "^5.4.5",
+    "prettier": "2.4.1",
     "typechain": "^5.1.2",
     "typescript": "^4.3.5"
   }
