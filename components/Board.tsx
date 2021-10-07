@@ -225,7 +225,10 @@ const Board = () => {
         rowsLoaded += 1;
       }
 
-      if (owner && squaresLoaded[(y*MAX_SIZE)+x].owner != owner) {
+      if (owner && (squaresLoaded[(y*MAX_SIZE)+x] == null || squaresLoaded[(y*MAX_SIZE)+x].owner != owner)) {
+        if (squaresLoaded[(y*MAX_SIZE)+x] == null) {
+          squaresLoaded[(y*MAX_SIZE)+x] = {}
+        }
         squaresLoaded[(y*MAX_SIZE)+x].owner = owner;
         updateCachedCoordinate((y*MAX_SIZE)+x, owner, squaresLoaded[(y*MAX_SIZE)+x].color, squaresLoaded[(y*MAX_SIZE)+x].image_uri);
         loadAssets((y*MAX_SIZE)+x, owner);
