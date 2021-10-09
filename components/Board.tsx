@@ -257,29 +257,29 @@ const Board = () => {
   }
 
   return (
-    <div>
+    <div className="space-y-6">
       {rowCount != MAX_SIZE && (
-        <div className="status">
-          <p style={{color: "red"}}>
+        <div className="text-center space-y-6">
+          <p className="text-red-600">
             Updating X,Y Coordinates...{rowCount*100/MAX_SIZE}{"%"}<br />
             (Page may be slow while loading on-chain data. Hang tight!)
           </p>
           {isConnected && (
-            <button className="ui medium disabled button">
+            <button className="bg-gray-600 text-gray-800 text-l font-medium py-2 px-4 rounded" disabled>
               Can&#39;t decide? Claim a random X,Y Coordinate
             </button>
           )}
         </div>
       )}
       {isConnected && rowCount == MAX_SIZE && (
-        <div className="status">
+        <div className="text-center space-y-6">
           <XYTotalSupply />
-          <button className="ui medium green button" onClick={() => handleRandomClaim()}>
+          <button className="bg-og-green hover:bg-og-green-dark text-white text-l font-medium py-2 px-4 rounded" onClick={() => handleRandomClaim()}>
             Can&#39;t decide? Claim a random X,Y Coordinate
           </button>
         </div>
       )}
-      <div className="game-board">
+      <div className="game-board w-11/12 m-auto grid gap-0 cursor-pointer">
         {squaresRendered}
       </div>
     </div>
