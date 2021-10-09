@@ -16,21 +16,20 @@ const Square = ({x, y, square, handleClaim, handleToggle }) => {
     }
   }
   return (
-      <div className={`square ${square && square.owner ? 'claimed' : ''}`} style={square && square.image_uri ? {backgroundImage: `url(${square.image_uri})`} : {backgroundColor: color}} onClick={() => handleClick()}>
-        <div className="content tooltip">
-          <span className="tooltiptext">
-            ({x},{y})
-            <br/>
-            {square && square.image_uri && (
-              <>
-              <img src={square.image_uri} width="128" />
-              <br/>
-              </>
-            )}
-            {`${square && square.owner ? shortenHex(square.owner, 5) : ''}`}</span>
+    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri ? {backgroundImage: `url(${square.image_uri})`} : {backgroundColor: color}} onClick={() => handleClick()}>
+      <div className="ct tt">
+        <div className="ttt">
+          <p>({x},{y})</p>
+          {square && square.image_uri && (
+            <img src={square.image_uri} width="128" />
+          )}
+          {square && square.owner && (
+            <p>{shortenHex(square.owner, 5)}</p>
+          )}
         </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default Square;

@@ -10,7 +10,7 @@ const XYTotalSupply = () => {
   return (
     <p>
       Total Claimed Coordinates: <b>{parseBalance(data ?? 0, 0, 0)}/{MAX_SIZE*MAX_SIZE}</b><br />
-      (Click an empty square <span className="emptyColor">&nbsp; &nbsp; &nbsp;</span> to claim. On-chain data may change at any time, causing transactions to fail.)
+      (Click an empty square <span className="border box-border border-og-green-dark bg-og-green">&nbsp; &nbsp; &nbsp;</span> to claim. On-chain data may change at any time, causing transactions to fail.)
     </p>
   );
 };

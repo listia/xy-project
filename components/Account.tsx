@@ -53,9 +53,9 @@ const Account = ({ triedToEagerConnect }: Props) => {
       (window as any)?.web3;
 
     return (
-      <div>
+      <div className="text-center">
         {hasMetaMaskOrWeb3Available ? (
-          <button className="ui huge green button"
+          <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-3 px-5 rounded"
             onClick={() => {
               setConnecting(true);
 
@@ -74,7 +74,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
               : "Connect to Wallet"}
           </button>
         ) : (
-          <button className="ui huge green button" onClick={() => onboarding.current?.startOnboarding()}>
+          <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-3 px-5 rounded" onClick={() => onboarding.current?.startOnboarding()}>
             Install Metamask
           </button>
         )}
@@ -91,7 +91,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
           rel: "noopener noreferrer",
         }}
       >
-        <span className="accountColor" style={{backgroundColor: stringToColor(account)}}>
+        <span className="border box-border border-black" style={{backgroundColor: stringToColor(account)}}>
           &nbsp; &nbsp; &nbsp;
         </span>
         &nbsp;
