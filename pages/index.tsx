@@ -50,23 +50,23 @@ function Home() {
           </h2>
 
           {isConnected && (
-            <section>
+            <section className="w-full">
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
                 <XYBalance />
               </div>
+              <Game />
             </section>
           )}
 
           {!isConnected && (
-            <section>
+            <section className="w-full">
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
               </div>
+              <Game />
             </section>
           )}
-
-          <Game />
 
           <>
             <p>Brought to you by the team @ <a href="https://nftyverse.com" target="_blank" rel="noreferrer">NFTYverse API</a></p>
