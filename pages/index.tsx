@@ -50,7 +50,7 @@ function Home() {
           </h2>
 
           {isConnected && (
-            <section className="w-full">
+            <section className="w-full space-y-6">
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
                 <XYBalance />
@@ -60,7 +60,7 @@ function Home() {
           )}
 
           {!isConnected && (
-            <section className="w-full">
+            <section className="w-full space-y-6">
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
               </div>
