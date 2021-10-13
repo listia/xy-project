@@ -91,7 +91,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
           rel: "noopener noreferrer",
         }}
       >
-        <span className="border box-border border-black" style={{backgroundColor: stringToColor(account)}}>
+        <span className="border box-border border-black" style={{backgroundColor: stringToColor(account, null)}}>
           &nbsp; &nbsp; &nbsp;
         </span>
         &nbsp;

@@ -1,11 +1,12 @@
 import useXYClaim from "../hooks/useXYClaim";
-import { XYContractAddress, stringToColor, MAX_SIZE, shortenHex } from "../util";
+import { XYContractAddress, stringToColor, stringToBorderColor, MAX_SIZE, shortenHex, METAVERSE_COLORS } from "../util";
 import { useWeb3React } from "@web3-react/core";
 
-const Square = ({x, y, square, handleClaim, handleToggle }) => {
+const Square = ({x, y, square, contract, handleClaim, handleToggle, finishedLoading }) => {
   const { account } = useWeb3React();
 
-  const color = square && square.color ? square.color : stringToColor(square ? square.owner : null);
+  const color = square && square.color ? square.color : stringToColor(square ? square.owner : null, contract);
+  const borderColor = square && square.color ? square.color : stringToBorderColor(square ? square.owner : null, contract);
   function handleClick() {
     if (square && square.owner == account) {
       handleToggle(x, y);
@@ -16,15 +17,18 @@ const Square = ({x, y, square, handleClaim, handleToggle }) => {
     }
   }
   return (
-    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri ? {backgroundImage: `url(${square.image_uri})`} : {backgroundColor: color}} onClick={() => handleClick()}>
+    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri ? {backgroundImage: `url(${square.image_uri})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}} onClick={() => handleClick()}>
       <div className="ct tt">
         <div className="ttt">
           <p>({x},{y})</p>
           {square && square.image_uri && (
             <img src={square.image_uri} width="128" />
           )}
+          {!square && finishedLoading && (
+            <p>Click to claim!</p>
+          )}
           {square && square.owner && (
-            <p>{shortenHex(square.owner, 5)}</p>
+            <p>{shortenHex(square.owner, 4)}</p>
           )}
         </div>
       </div>

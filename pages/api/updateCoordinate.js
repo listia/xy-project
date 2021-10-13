@@ -4,17 +4,24 @@ import { faunaClient } from '../../lib/fauna';
 export default async (req, res) => {
   console.log("updateCoordinate: " + JSON.stringify(req.body, null, 2));
   if (req.method == 'POST') {
-    console.log("updating Coordinate...")
+    let collection_name = 'coordinates';
+    let index_name = 'unique_token_id';
+    if (req.body.contract) {
+      collection_name = req.body.contract.toLowerCase();
+      index_name = index_name + "_" + collection_name;
+    }
+    console.log("updating Coordinate in Collection: " + collection_name)
+
     let query = await faunaClient.query(
       // update OR create a coordinate based on the token_id
       q.Let({
-          match: q.Match(q.Index('unique_token_id'), req.body.token_id),
+          match: q.Match(q.Index(index_name), req.body.token_id),
           data: { token_id: req.body.token_id, owner: req.body.owner, color: req.body.color, image_uri: req.body.image_uri }
         },
         q.If(
           q.Exists(q.Var('match')),
           q.Update(q.Select(['ref'], q.Get(q.Var('match'))), { data: q.Var('data') }),
-          q.Create(q.Collection('coordinates'), { data: q.Var('data') })
+          q.Create(q.Collection(collection_name), { data: q.Var('data') })
         )
       )
     );

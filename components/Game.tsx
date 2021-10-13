@@ -1,9 +1,9 @@
 import Board from "../components/Board";
 
-const Game = () => {
+const Game = (props) => {
   return (
       <div className="w-full">
-        <Board />
+        <Board contract={props.contract} />
       </div>
     );
 }

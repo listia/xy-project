@@ -9,7 +9,7 @@ import XYTotalSupply from "../components/XYTotalSupply";
 import * as rax from 'retry-axios';
 import axios from "axios";
 
-const Board = () => {
+const Board = (props) => {
   const claim = useXYClaim( );
   const ownerOf = useXYOwnerOf();
 
@@ -29,7 +29,7 @@ const Board = () => {
   var rowsLoaded = 0;
   const [rowCount, setRowCount] = useState(0);
 
-  const MAX_ASSETS = 30;
+  const MAX_ASSETS = 50;
   const [assetCount, setAssetCount] = useState(0);
 
   const [checkOwnerInterval, setCheckOwnerInterval] = useState(null);
@@ -62,7 +62,8 @@ const Board = () => {
       method: 'GET',
       url: getAssetsURL,
       params: { owner: account,
-                limit: MAX_ASSETS},
+                limit: MAX_ASSETS,
+                contract: props.contract},
       raxConfig: {
         retry: 2
       }
@@ -94,18 +95,19 @@ const Board = () => {
       method: 'GET',
       url: getAssetsURL,
       params: { owner: owner,
-                limit: MAX_ASSETS},
+                limit: MAX_ASSETS,
+                contract: props.contract},
       raxConfig: {
         retry: 2
       }
     }).then((response) => {
       // @ts-ignore
-      squaresLoaded[squareIndex].image_uri = response.data.assets[0].image_thumbnail_url;
+      squaresLoaded[squareIndex].image_uri = props.contract ? response.data.assets[Math.floor(Math.random()*response.data.assets.length)].image_thumbnail_url : response.data.assets[0].image_thumbnail_url;
       updateCachedCoordinate(squareIndex,
                              squaresLoaded[squareIndex].owner,
                              squaresLoaded[squareIndex].color,
                              // @ts-ignore
-                             response.data.assets[0].image_thumbnail_url);
+                             squaresLoaded[squareIndex].image_uri);
     }).catch(error => {
       console.log(error);
     })
@@ -116,6 +118,7 @@ const Board = () => {
     axios({
       method: 'GET',
       url: getBoardURL,
+      params: { contract: props.contract },
       raxConfig: {
         retry: 10
       }
@@ -159,7 +162,8 @@ const Board = () => {
         token_id: tokenId,
         owner: owner,
         color: color,
-        image_uri: image_uri
+        image_uri: image_uri,
+        contract: props.contract
       },
     }).then((response) => {
       console.log("updateCachedCoordinate result: " + JSON.stringify(response.data, null, 2))
@@ -168,12 +172,17 @@ const Board = () => {
     })
   };
 
-  function updateOwners() {
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+  const updateOwners = async () => {
     if (isConnected) {
       rowsLoaded = 0;
       for (let y = 0; y < MAX_SIZE; y++) {
         for (let x = 0; x < MAX_SIZE; x++) {
           checkOwner(x,y);
+          await sleep(5);
         }
       }
     }
@@ -190,7 +199,7 @@ const Board = () => {
     // metamask to connect or not
     const loadTimeout = setTimeout(() => {
       loadCachedBoard();
-    }, 5000);
+    }, 3000);
 
     // update board UI every 3 seconds
     const boardInterval = setInterval(() => {
@@ -230,7 +239,10 @@ const Board = () => {
           squaresLoaded[(y*MAX_SIZE)+x] = {}
         }
         squaresLoaded[(y*MAX_SIZE)+x].owner = owner;
-        updateCachedCoordinate((y*MAX_SIZE)+x, owner, squaresLoaded[(y*MAX_SIZE)+x].color, squaresLoaded[(y*MAX_SIZE)+x].image_uri);
+        updateCachedCoordinate((y*MAX_SIZE)+x,
+                               owner,
+                               squaresLoaded[(y*MAX_SIZE)+x].color,
+                               squaresLoaded[(y*MAX_SIZE)+x].image_uri);
         loadAssets((y*MAX_SIZE)+x, owner);
       }
     } catch (error) {
@@ -246,7 +258,7 @@ const Board = () => {
   }
 
   function renderSquare(x, y) {
-    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} />;
+    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} finishedLoading={rowCount == MAX_SIZE} />;
   }
 
   var squaresRendered = [];

@@ -21,6 +21,14 @@ const ETHERSCAN_PREFIXES = {
   42: "kovan.",
 };
 
+export const METAVERSE = {
+  "NFTWorlds": {name: "NFT Worlds", link: "https://opensea.io/collection/nft-worlds?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af"}
+};
+
+export const METAVERSE_COLORS = {
+  "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af": {borderColor: "#2A2A2A", claimedColor: "#005EB8"}
+};
+
 export function formatEtherscanLink(
   type: "Account" | "Transaction",
   data: [number, string]
@@ -38,9 +46,12 @@ export function formatEtherscanLink(
 }
 
 // From: https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
-export function stringToColor(str) {
+export function stringToColor(str, contract) {
     if (str == null) {
       return "#1da045"
+    }
+    if (contract) {
+      return METAVERSE_COLORS[contract].claimedColor;
     }
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -52,6 +63,16 @@ export function stringToColor(str) {
         color += ('00' + value.toString(16)).substr(-2);
     }
     return color;
+}
+
+export function stringToBorderColor(str, contract) {
+    if (str == null) {
+      return "#108e36"
+    }
+    if (contract) {
+      return METAVERSE_COLORS[contract].claimedColor;
+    }
+    return "#2A2A2A";
 }
 
 // Returns a random index from the array where the value is null

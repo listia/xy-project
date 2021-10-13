@@ -8,7 +8,7 @@ const XYBalance = () => {
   const { data } = useXYBalance(account, XYContractAddress);
 
   if (data) {
-    return <p>Coordinates in Your Wallet: <b>{parseBalance(data ?? 0, 0, 0)} XYC</b><br/>(Click on a coordinate you own to rotate NFTs from your wallet)</p>;
+    return <p>Coordinates in Your Wallet: <b>{parseBalance(data ?? 0, 0, 0)} XYC</b><br/>(Click on your coordinates to rotate NFTs in your wallet)</p>;
   }
   else {
     return <p>Loading Your Coordinates...</p>;
