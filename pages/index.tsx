@@ -62,7 +62,6 @@ function Home() {
                 <Account triedToEagerConnect={triedToEagerConnect} />
                 <XYBalance />
               </div>
-              <Game />
             </section>
           )}
 
@@ -71,9 +70,10 @@ function Home() {
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
               </div>
-              <Game />
             </section>
           )}
+
+          <Game />
 
           <Footer />
         </div>

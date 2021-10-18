@@ -23,7 +23,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
   // initialize metamask onboarding
   const onboarding = useRef<MetaMaskOnboarding>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     onboarding.current = new MetaMaskOnboarding();
   }, []);
 

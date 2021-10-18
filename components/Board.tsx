@@ -20,19 +20,54 @@ const Board = (props) => {
   const getBoardURL = '/api/getBoard';
   const updateCoordinateURL = '/api/updateCoordinate';
 
-  var squaresLoaded = Array(MAX_SIZE*MAX_SIZE).fill(null);
-  const [squares, setSquares] = useReducer(reducer, null, function getInitialState(filler) {
+  const [squares, setSquares] = useReducer(squaresReducer, null, function getInitialState(filler) {
     const object = Array(MAX_SIZE*MAX_SIZE).fill(filler);
     return object;
   });
 
-  var rowsLoaded = 0;
-  const [rowCount, setRowCount] = useState(0);
+  const [rows, setRows] = useReducer(rowsReducer, {count: 0});
 
   const MAX_ASSETS = 50;
   const [assetCount, setAssetCount] = useState(0);
 
-  const [checkOwnerInterval, setCheckOwnerInterval] = useState(null);
+  const [loadingBoard, setLoadingBoard] = useState(true);
+
+  function squaresReducer(squares, action) {
+    switch (action.type) {
+      case 'update':
+        squares[action.index].owner = action.owner;
+        squares[action.index].color = action.color;
+        squares[action.index].image_uri = action.image_uri;
+        return [...squares];
+      case 'set':
+        return [...action.newsquares];
+      default:
+        throw new Error();
+    }
+  }
+
+  function rowsReducer(state, action) {
+    switch (action.type) {
+        case 'increment':
+          return {count: state.count + 1};
+        case 'decrement':
+          return {count: state.count - 1};
+        case 'reset':
+          return {count: action.count};
+        default:
+          throw new Error();
+      }
+  }
+
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+  const handleReload = async (e) => {
+    e.preventDefault();
+    setRows({type: 'reset', count: 0})
+    updateOwners();
+  }
 
   const handleRandomClaim = async () => {
     var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
@@ -52,8 +87,17 @@ const Board = (props) => {
     } catch (error) {
       // Do nothing
     }
-    // TODO: show that square is pending?
-    // Can't set squaresLoaded here for some reason. Seems like another copy of it. TBD
+    if (squares[(y*MAX_SIZE)+x] == null) {
+      squares[(y*MAX_SIZE)+x] = {}
+    }
+    if (isConnected) {
+      // visually show that the squre is pending
+      setSquares({ type: 'update',
+                   index: (y*MAX_SIZE)+x,
+                   owner: "..",
+                   color: "",
+                   image_uri: ""});
+    }
   };
 
   // toggle image on the square
@@ -102,12 +146,16 @@ const Board = (props) => {
       }
     }).then((response) => {
       // @ts-ignore
-      squaresLoaded[squareIndex].image_uri = props.contract ? response.data.assets[Math.floor(Math.random()*response.data.assets.length)].image_thumbnail_url : response.data.assets[0].image_thumbnail_url;
+      setSquares({ type: 'update',
+                   index: squareIndex,
+                   owner: squares[squareIndex].owner,
+                   color: squares[squareIndex].color,
+                   image_uri: props.contract ? response.data.assets[Math.floor(Math.random()*response.data.assets.length)].image_thumbnail_url : response.data.assets[0].image_thumbnail_url});
       updateCachedCoordinate(squareIndex,
-                             squaresLoaded[squareIndex].owner,
-                             squaresLoaded[squareIndex].color,
+                             squares[squareIndex].owner,
+                             squares[squareIndex].color,
                              // @ts-ignore
-                             squaresLoaded[squareIndex].image_uri);
+                             squares[squareIndex].image_uri);
     }).catch(error => {
       console.log(error);
     })
@@ -123,6 +171,8 @@ const Board = (props) => {
         retry: 10
       }
     }).then((response) => {
+      // use a temp variable for faster loading
+      var squaresLoaded = Array(MAX_SIZE*MAX_SIZE).fill(null);
       // @ts-ignore
       response.data.coordinates.map((coordinate) => {
         // indexes into coordinate array
@@ -135,20 +185,10 @@ const Board = (props) => {
                                         "image_uri": coordinate[3]};
       });
 
-      // update the UI right away after cached board is loaded
-      rowsLoaded = MAX_SIZE;
-      updateSquares();
-
-      // sync with on-chain data soon after cached board is loaded
-      setTimeout(() => {
-        updateOwners();
-      }, 30000);
-
-      // also check for new owners every 10 minutes
-      const intervalId = setInterval(() => {
-        updateOwners();
-      }, 600000);
-      setCheckOwnerInterval(intervalId);
+      // update squares state
+      setLoadingBoard(false);
+      setSquares({ type: 'set', newsquares: squaresLoaded});
+      setRows({type: 'reset', count: MAX_SIZE})
     }).catch(error => {
       console.log(error);
     })
@@ -172,13 +212,9 @@ const Board = (props) => {
     })
   };
 
-  const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
-
   const updateOwners = async () => {
     if (isConnected) {
-      rowsLoaded = 0;
+      setRows({type: 'reset', count: 0})
       for (let y = 0; y < MAX_SIZE; y++) {
         for (let x = 0; x < MAX_SIZE; x++) {
           checkOwner(x,y);
@@ -188,77 +224,49 @@ const Board = (props) => {
     }
   }
 
-  function updateSquares() {
-    setSquares({ type: 'set', newsquares: squaresLoaded});
-    setRowCount(rowsLoaded);
-  }
-
-  useEffect(() => {
-    // don't load right away, in case metamask is connecting
-    // TODO: make this deterministic, so it waits for
-    // metamask to connect or not
-    const loadTimeout = setTimeout(() => {
-      loadCachedBoard();
-    }, 3000);
-
-    // update board UI every 3 seconds
-    const boardInterval = setInterval(() => {
-      updateSquares();
-    }, 3000);
-
-    return () => {
-      clearInterval(boardInterval);
-      clearInterval(checkOwnerInterval);
-      clearTimeout(loadTimeout);
-    }
-  }, []);
-
-  function reducer(squares, action) {
-    switch (action.type) {
-      case 'update':
-        squares[action.index].owner = action.owner;
-        squares[action.index].color = action.color;
-        squares[action.index].image_uri = action.image_uri;
-        return [...squares];
-      case 'set':
-        return [...action.newsquares];
-      default:
-        throw new Error();
-    }
-  }
-
   const checkOwner = async (x, y) => {
     try {
       const owner = await ownerOf((y*MAX_SIZE) + x + 1);
       if (x == MAX_SIZE-1) {
-        rowsLoaded += 1;
+        setRows({type: 'increment'})
       }
-
-      if (owner && (squaresLoaded[(y*MAX_SIZE)+x] == null || squaresLoaded[(y*MAX_SIZE)+x].owner != owner)) {
-        if (squaresLoaded[(y*MAX_SIZE)+x] == null) {
-          squaresLoaded[(y*MAX_SIZE)+x] = {}
+      if (owner && (squares[(y*MAX_SIZE)+x] == null || squares[(y*MAX_SIZE)+x].owner != owner)) {
+        if (squares[(y*MAX_SIZE)+x] == null) {
+          squares[(y*MAX_SIZE)+x] = {}
         }
-        squaresLoaded[(y*MAX_SIZE)+x].owner = owner;
+        setSquares({ type: 'update',
+                     index: (y*MAX_SIZE)+x,
+                     owner: owner,
+                     color: squares[(y*MAX_SIZE)+x].color,
+                     image_uri: squares[(y*MAX_SIZE)+x].image_uri});
         updateCachedCoordinate((y*MAX_SIZE)+x,
                                owner,
-                               squaresLoaded[(y*MAX_SIZE)+x].color,
-                               squaresLoaded[(y*MAX_SIZE)+x].image_uri);
+                               squares[(y*MAX_SIZE)+x].color,
+                               squares[(y*MAX_SIZE)+x].image_uri);
         loadAssets((y*MAX_SIZE)+x, owner);
       }
     } catch (error) {
       // x,y token not minted yet, which is ok
       if (String(error).includes("nonexistent token")) {
         if (x == MAX_SIZE-1) {
-          rowsLoaded += 1;
+          setRows({type: 'increment'})
         }
       } else { // retry on other errors, such as "failed to fetch"
+        await sleep(5);
         checkOwner(x,y);
       }
     }
   }
 
+  useEffect(() => {
+    loadCachedBoard();
+
+    return () => {
+    }
+  }, []);
+
   function renderSquare(x, y) {
-    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} finishedLoading={rowCount == MAX_SIZE} />;
+    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} showClickPrompt={isConnected && !loadingBoard && rows.count == MAX_SIZE} />;
   }
 
   var squaresRendered = [];
@@ -270,10 +278,18 @@ const Board = (props) => {
 
   return (
     <div className="space-y-6">
-      {rowCount != MAX_SIZE && (
+      {loadingBoard && (
+        <div className="flex flex-row justify-center items-center animate-pulse space-x-2 mx-auto">
+          <p className="text-purple-600 font-semibold text-lg">Fetching The X,Y Project Grid</p>
+          <div className="rounded-full bg-purple-600 h-4 w-4"></div>
+          <div className="rounded-full bg-pink-700 h-4 w-4"></div>
+          <div className="rounded-full bg-red-500 h-4 w-4"></div>
+        </div>
+      )}
+      {!loadingBoard && rows.count != MAX_SIZE && (
         <div className="text-center space-y-6">
           <p className="text-red-600">
-            Updating X,Y Coordinates...{rowCount*100/MAX_SIZE}{"%"}<br />
+            Updating X,Y Coordinates...{rows.count*100/MAX_SIZE}{"%"}<br />
             (Page may be slow while loading on-chain data. Hang tight!)
           </p>
           {isConnected && (
@@ -283,9 +299,9 @@ const Board = (props) => {
           )}
         </div>
       )}
-      {isConnected && rowCount == MAX_SIZE && (
+      {isConnected && !loadingBoard && rows.count == MAX_SIZE && (
         <div className="text-center space-y-6">
-          <XYTotalSupply />
+          <XYTotalSupply handleReload={handleReload} />
           <button className="bg-og-green hover:bg-og-green-dark text-white text-l font-medium py-2 px-4 rounded" onClick={() => handleRandomClaim()}>
             Can&#39;t decide? Claim a random X,Y Coordinate
           </button>

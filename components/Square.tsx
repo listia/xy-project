@@ -2,7 +2,7 @@ import useXYClaim from "../hooks/useXYClaim";
 import { XYContractAddress, stringToColor, stringToBorderColor, MAX_SIZE, shortenHex, METAVERSE_COLORS } from "../util";
 import { useWeb3React } from "@web3-react/core";
 
-const Square = ({x, y, square, contract, handleClaim, handleToggle, finishedLoading }) => {
+const Square = ({x, y, square, contract, handleClaim, handleToggle, showClickPrompt }) => {
   const { account } = useWeb3React();
 
   const color = square && square.color ? square.color : stringToColor(square ? square.owner : null, contract);
@@ -17,14 +17,14 @@ const Square = ({x, y, square, contract, handleClaim, handleToggle, finishedLoad
     }
   }
   return (
-    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri ? {backgroundImage: `url(${square.image_uri})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}} onClick={() => handleClick()}>
+    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri && !square.image_uri.includes(".mp") ? {backgroundImage: `url(${square.image_uri})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}} onClick={() => handleClick()}>
       <div className="ct tt">
         <div className="ttt">
           <p>({x},{y})</p>
-          {square && square.image_uri && (
+          {square && square.image_uri && !square.image_uri.includes(".mp") && (
             <img src={square.image_uri} width="128" />
           )}
-          {!square && finishedLoading && (
+          {!square && showClickPrompt && (
             <p>Click to claim!</p>
           )}
           {square && square.owner && (
