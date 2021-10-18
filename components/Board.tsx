@@ -150,6 +150,7 @@ const Board = (props) => {
                    index: squareIndex,
                    owner: squares[squareIndex].owner,
                    color: squares[squareIndex].color,
+                   // @ts-ignore
                    image_uri: props.contract ? response.data.assets[Math.floor(Math.random()*response.data.assets.length)].image_thumbnail_url : response.data.assets[0].image_thumbnail_url});
       updateCachedCoordinate(squareIndex,
                              squares[squareIndex].owner,
