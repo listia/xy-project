@@ -8,8 +8,13 @@ import { useWeb3React } from "@web3-react/core";
 import XYTotalSupply from "../components/XYTotalSupply";
 import * as rax from 'retry-axios';
 import axios from "axios";
+import dynamic from "next/dynamic";
 
 const Board = (props) => {
+  // load this dynamically due to: https://github.com/wwayne/react-tooltip/issues/675
+  const ReactTooltip = dynamic(() => import("react-tooltip"), {
+    ssr: false,
+  });
   const claim = useXYClaim( );
   const ownerOf = useXYOwnerOf();
 
@@ -277,6 +282,24 @@ const Board = (props) => {
     }
   }
 
+  const handleTooltipContent = (dataTip) => {
+      //ReactTooltip.rebuild();
+      if (!dataTip) {
+        return "";
+      }
+      const [coordinates, img_uri, description] = dataTip.split("|");
+
+      return coordinates ? (
+        <div className="text-center space-y-1">
+          <p>{coordinates}</p>
+          {img_uri && (
+            <img src={img_uri} width="128" />
+          )}
+          <p>{description}</p>
+        </div>
+      ) : null;
+    };
+
   return (
     <div className="space-y-6">
       {loadingBoard && (
@@ -310,6 +333,13 @@ const Board = (props) => {
       )}
       <div className="game-board w-11/12 m-auto grid gap-0 cursor-pointer">
         {squaresRendered}
+      <ReactTooltip id='squaretip'
+        getContent={handleTooltipContent}
+        effect={'solid'}
+        place={'top'}
+        border={false}
+        type={'dark'}
+      />
       </div>
     </div>
   );

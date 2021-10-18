@@ -44,34 +44,3 @@ a {
   height: 100%;
   width: 100%;
 }
-/* tt = Tooltip */
-.tt {
-  position: relative;
-  display: inline-block;
-}
-/* ttt = Tooltiptext */
-.tt .ttt {
-  visibility: hidden;
-  width: 150px;
-  bottom: 150%;
-  left: 50%;
-  margin-left: -75px;
-  padding: 5px;
-  border-radius: 5px;
-  position: absolute;
-  z-index: 1;
-  @apply flex flex-col space-y-2 items-center bg-black text-white;
-}
-.tt:hover .ttt {
-  visibility: visible;
-}
-.tt .ttt::after {
-  content: " ";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: black transparent transparent transparent;
-}

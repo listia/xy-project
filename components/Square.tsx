@@ -4,9 +4,11 @@ import { useWeb3React } from "@web3-react/core";
 
 const Square = ({x, y, square, contract, handleClaim, handleToggle, showClickPrompt }) => {
   const { account } = useWeb3React();
-
+  const img = square && square.image_uri && !square.image_uri.includes(".mp") ? square.image_uri : ""
+  const description = !square && showClickPrompt ? "Click to claim!" : (square && square.owner ? shortenHex(square.owner, 4) : "")
   const color = square && square.color ? square.color : stringToColor(square ? square.owner : null, contract);
   const borderColor = square && square.color ? square.color : stringToBorderColor(square ? square.owner : null, contract);
+
   function handleClick() {
     if (square && square.owner == account) {
       handleToggle(x, y);
@@ -17,21 +19,11 @@ const Square = ({x, y, square, contract, handleClaim, handleToggle, showClickPro
     }
   }
   return (
-    <div className={`sq ${square && square.owner ? 'cl' : ''}`} style={square && square.image_uri && !square.image_uri.includes(".mp") ? {backgroundImage: `url(${square.image_uri})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}} onClick={() => handleClick()}>
-      <div className="ct tt">
-        <div className="ttt">
-          <p>({x},{y})</p>
-          {square && square.image_uri && !square.image_uri.includes(".mp") && (
-            <img src={square.image_uri} width="128" />
-          )}
-          {!square && showClickPrompt && (
-            <p>Click to claim!</p>
-          )}
-          {square && square.owner && (
-            <p>{shortenHex(square.owner, 4)}</p>
-          )}
-        </div>
-      </div>
+    <div data-for='squaretip'
+         data-tip={`(${x},${y})|${img}|${description}`}
+         className={`sq ${square && square.owner ? 'cl' : ''}`}
+         style={img != "" ? {backgroundImage: `url(${img})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}}
+         onClick={() => handleClick()}>
     </div>
   );
 };
