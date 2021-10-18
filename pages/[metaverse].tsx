@@ -46,7 +46,6 @@ function Metaverse() {
                 <Account triedToEagerConnect={triedToEagerConnect} />
                 <XYBalance />
               </div>
-              <Game contract={metaverse ? METAVERSE[metaverse.toString()].contract : ""} />
             </section>
           )}
 
@@ -55,9 +54,10 @@ function Metaverse() {
               <div className="text-center">
                 <Account triedToEagerConnect={triedToEagerConnect} />
               </div>
-              <Game contract={metaverse ? METAVERSE[metaverse.toString()].contract : ""} />
             </section>
           )}
+
+          <Game contract={metaverse ? METAVERSE[metaverse.toString()].contract : ""} />
 
           <Footer />
         </div>
