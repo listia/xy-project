@@ -40,6 +40,9 @@ const Board = (props) => {
   function squaresReducer(squares, action) {
     switch (action.type) {
       case 'update':
+        if (squares[action.index] == null) {
+          squares[action.index] = {}
+        }
         squares[action.index].owner = action.owner;
         squares[action.index].color = action.color;
         squares[action.index].image_uri = action.image_uri;
@@ -91,9 +94,6 @@ const Board = (props) => {
       const sig = await claim(x, y);
     } catch (error) {
       // Do nothing
-    }
-    if (squares[(y*MAX_SIZE)+x] == null) {
-      squares[(y*MAX_SIZE)+x] = {}
     }
     if (isConnected) {
       // visually show that the squre is pending
@@ -237,9 +237,6 @@ const Board = (props) => {
         setRows({type: 'increment'})
       }
       if (owner && (squares[(y*MAX_SIZE)+x] == null || squares[(y*MAX_SIZE)+x].owner != owner)) {
-        if (squares[(y*MAX_SIZE)+x] == null) {
-          squares[(y*MAX_SIZE)+x] = {}
-        }
         setSquares({ type: 'update',
                      index: (y*MAX_SIZE)+x,
                      owner: owner,
