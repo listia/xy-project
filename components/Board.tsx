@@ -150,6 +150,9 @@ const Board = (props) => {
         retry: 2
       }
     }).then((response) => {
+      if (squares[squareIndex] == null) {
+        squares[squareIndex] = {}
+      }
       // @ts-ignore
       setSquares({ type: 'update',
                    index: squareIndex,
@@ -237,6 +240,9 @@ const Board = (props) => {
         setRows({type: 'increment'})
       }
       if (owner && (squares[(y*MAX_SIZE)+x] == null || squares[(y*MAX_SIZE)+x].owner != owner)) {
+        if (squares[(y*MAX_SIZE)+x] == null) {
+          squares[(y*MAX_SIZE)+x] = {}
+        }
         setSquares({ type: 'update',
                      index: (y*MAX_SIZE)+x,
                      owner: owner,
