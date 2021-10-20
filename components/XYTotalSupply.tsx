@@ -9,7 +9,7 @@ const XYTotalSupply = ({ handleReload }) => {
 
   return (
     <p>
-      Total Claimed Coordinates: <b>{parseBalance(data ?? 0, 0, 0)}/{MAX_SIZE*MAX_SIZE}</b> (<a href="#" onClick={e => handleReload(e)}>reload coordinates</a>)<br />
+      Total Claimed Coordinates: <b>{parseBalance(data ?? 0, 0, 0)}/{MAX_SIZE*MAX_SIZE}</b> (<a href="#" onClick={e => handleReload(e)}>sync with blockchain</a>)<br />
       (Click an empty square <span className="border box-border border-og-green-dark bg-og-green">&nbsp; &nbsp; &nbsp;</span> to claim. On-chain data may change at any time and txns may fail.)
     </p>
   );
