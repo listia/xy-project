@@ -34,7 +34,7 @@ async function createNewCollection(all_index_name, unique_index_name, contract) 
 
 export default async (req, res) => {
   console.log("getBoard: " + JSON.stringify(req.method, null, 2))
-  if (req.method == 'GET') {
+  if (faunaClient && req.method == 'GET') {
 
     let all_index_name = 'all_coordinates';
     let unique_index_name = 'unique_token_id';
@@ -68,5 +68,7 @@ export default async (req, res) => {
     } else {
       res.status(200).json({ coordinates: [] });
     }
+  } else {
+    res.status(200).json({ coordinates: [] });
   }
 };

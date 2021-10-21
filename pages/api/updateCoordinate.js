@@ -3,7 +3,7 @@ import { faunaClient } from '../../lib/fauna';
 
 export default async (req, res) => {
   console.log("updateCoordinate: " + JSON.stringify(req.body, null, 2));
-  if (req.method == 'POST') {
+  if (faunaClient && req.method == 'POST') {
     let collection_name = 'coordinates';
     let index_name = 'unique_token_id';
     if (req.body.contract) {
@@ -27,5 +27,8 @@ export default async (req, res) => {
     );
     console.log("updateCoordinate result: " + JSON.stringify(query.data, null, 2))
     res.status(200).json({ data: query });
+  }
+  else {
+    res.status(500).json({ data: null });
   }
 };
