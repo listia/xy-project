@@ -80,7 +80,7 @@ const Board = (props) => {
   const handleRandomClaim = async () => {
     var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
     try {
-      if (tokenId >= 0) {
+      if (tokenId > 0) {
         const sig = await claim((tokenId - 1) % MAX_SIZE, Math.floor((tokenId - 1) / MAX_SIZE));
       } else {
       }
