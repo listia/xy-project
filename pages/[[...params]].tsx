@@ -37,6 +37,7 @@ function Home() {
   const metaverseName = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].name : null;
   const metaverseLink = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].link : null;
   const zoomParams = metaverseName ? params.slice(1, 4) : params.slice(0, 3)
+  // @ts-ignore
   const zoomParamsInt = zoomParams.map(Number);
   const zoom = zoomParamsInt[0] && [2, 4, 8, 16].includes(zoomParamsInt[0]) ? zoomParamsInt[0] : null;
   const x = (zoomParamsInt[1] || zoomParamsInt[1] == 0) && 0 <= zoomParamsInt[1] && zoomParamsInt[1] < MAX_SIZE ? zoomParamsInt[1] : null;
