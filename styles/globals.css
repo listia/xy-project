@@ -19,6 +19,18 @@ a {
 .game-board {
   grid-template-columns: repeat(auto-fill, minmax(0.78125%, 1fr));
 }
+.zoom-2x {
+  grid-template-columns: repeat(auto-fill, minmax(1.538%, 1fr));
+}
+.zoom-4x {
+  grid-template-columns: repeat(auto-fill, minmax(3.03%, 1fr));
+}
+.zoom-8x {
+  grid-template-columns: repeat(auto-fill, minmax(5.88%, 1fr));
+}
+.zoom-16x {
+  grid-template-columns: repeat(auto-fill, minmax(11.11%, 1fr));
+}
 
 /* sq = Square */
 .sq {
