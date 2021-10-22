@@ -301,14 +301,11 @@ const Board = (props) => {
   }
 
   var squaresRendered = [];
-  const zoom = props.zoom;
-  const x = props.x;
-  const y = props.y;
-  const validZoom = zoom && (x || x == 0) && (y || y == 0);
-  const iStart = validZoom ? getIStart(zoom, y) : 0;
-  const jStart = validZoom ? getIStart(zoom, x) : 0;
-  const iEnd = validZoom ? iStart + MAX_SIZE / zoom : MAX_SIZE-1;
-  const jEnd = validZoom ? jStart + MAX_SIZE / zoom : MAX_SIZE-1;
+  const validZoom = props.zoom && (props.x || props.x == 0) && (props.y || props.y == 0);
+  const iStart = validZoom ? getIStart(props.zoom, props.y) : 0;
+  const jStart = validZoom ? getIStart(props.zoom, props.x) : 0;
+  const iEnd = validZoom ? iStart + MAX_SIZE / props.zoom : MAX_SIZE-1;
+  const jEnd = validZoom ? jStart + MAX_SIZE / props.zoom : MAX_SIZE-1;
 
   for (var i = iStart; i <= iEnd; i++) {
     for (var j = jStart; j <= jEnd; j++) {
@@ -401,7 +398,7 @@ const Board = (props) => {
           </button>
         </div>
       </div>
-      <div className={`game-board w-11/12 m-auto grid gap-0 cursor-pointer ${zoom ? 'zoom-'+zoom+'x' : ''}`}>
+      <div className={`${props.zoom ? 'zoom-'+props.zoom+'x' : 'game-board'} w-11/12 m-auto grid gap-0 cursor-pointer`}>
         {squaresRendered}
       <ReactTooltip id='squaretip'
         getContent={handleTooltipContent}
