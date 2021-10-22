@@ -19,6 +19,9 @@ a {
 .game-board {
   grid-template-columns: repeat(auto-fill, minmax(0.78125%, 1fr));
 }
+.zoom-1x {
+  grid-template-columns: repeat(auto-fill, minmax(0.78125%, 1fr));
+}
 .zoom-2x {
   grid-template-columns: repeat(auto-fill, minmax(1.538%, 1fr));
 }
@@ -55,4 +58,8 @@ a {
   top: 0; left: 0;
   height: 100%;
   width: 100%;
+}
+
+.__react_component_tooltip.show {
+  opacity: 1 !important;
 }
