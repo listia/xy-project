@@ -53,7 +53,7 @@ function Home() {
           </section>
 
           <h2 className="text-2xl font-bold text-center">
-            Claim your Free X,Y Project NFTs (until they are all minted)
+            All X,Y Project NFTs have been claimed!
           </h2>
 
           {isConnected && (
