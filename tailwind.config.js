@@ -11,11 +11,14 @@ module.exports = {
       colors: {
         'og-green': '#1da045',
         'og-green-dark': '#108e36',
+        'bg-black': '#2a2a2a',
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }

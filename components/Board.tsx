@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import Square from "../components/Square";
 import useXYClaim from "../hooks/useXYClaim";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
@@ -11,6 +12,12 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 
 const Board = (props) => {
+  const router = useRouter()
+  const [selectZoom, setSelectZoom] = useState(props.zoom ? props.zoom : 1)
+  const [selectX, setSelectX] = useState(props.x ? props.x : 0)
+  const [selectY, setSelectY] = useState(props.y ? props.y : 0)
+  const metaverse = props.metaverse
+
   // load this dynamically due to: https://github.com/wwayne/react-tooltip/issues/675
   const ReactTooltip = dynamic(() => import("react-tooltip"), {
     ssr: false,
@@ -278,9 +285,33 @@ const Board = (props) => {
     return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} showClickPrompt={isConnected && !loadingBoard && rows.count == MAX_SIZE} />;
   }
 
+  function getIStart(zoom, center) {
+    var grid_size = MAX_SIZE / zoom;
+    var i;
+    if (center <= grid_size / 2) {
+      i = 0
+    }
+    else if (center >= MAX_SIZE - grid_size /2 - 1) {
+      i = MAX_SIZE - grid_size - 1
+    }
+    else {
+      i = center - grid_size / 2
+    }
+    return i
+  }
+
   var squaresRendered = [];
-  for (var i = 0; i < MAX_SIZE; i++) {
-    for (var j = 0; j < MAX_SIZE; j++) {
+  const zoom = props.zoom;
+  const x = props.x;
+  const y = props.y;
+  const validZoom = zoom && (x || x == 0) && (y || y == 0);
+  const iStart = validZoom ? getIStart(zoom, y) : 0;
+  const jStart = validZoom ? getIStart(zoom, x) : 0;
+  const iEnd = validZoom ? iStart + MAX_SIZE / zoom : MAX_SIZE-1;
+  const jEnd = validZoom ? jStart + MAX_SIZE / zoom : MAX_SIZE-1;
+
+  for (var i = iStart; i <= iEnd; i++) {
+    for (var j = jStart; j <= jEnd; j++) {
       squaresRendered.push(renderSquare(j, i));
     }
   }
@@ -302,6 +333,21 @@ const Board = (props) => {
         </div>
       ) : null;
     };
+
+  var xyOptions = [];
+  for (let i = 0; i < MAX_SIZE; i++) {
+    xyOptions.push(<option key={i} value={i}>{i}</option>);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (selectZoom == 1) {
+      router.push(metaverse ? metaverse : "/")
+    }
+    else {
+      router.push((metaverse ? metaverse+"/" : "")+selectZoom+"/"+selectX+"/"+selectY)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -326,7 +372,36 @@ const Board = (props) => {
           <XYTotalSupply handleReload={handleReload} />
         </div>
       )}
-      <div className="game-board w-11/12 m-auto grid gap-0 cursor-pointer">
+      <div className="flex flex-row space-x-6 items-end justify-center">
+        <div className="flex flex-row space-x-2 items-center">
+          <label htmlFor="zoom" className="block text-sm font-medium">Zoom</label>
+          <select value={selectZoom} onChange={e => setSelectZoom(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+            <option value="4">4x</option>
+            <option value="8">8x</option>
+            <option value="16">16x</option>
+          </select>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <label htmlFor="x" className="block text-sm font-medium">X</label>
+          <select value={selectX} onChange={e => setSelectX(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+            {xyOptions}
+          </select>
+        </div>
+        <div className="flex flex-row space-x-2 items-center">
+          <label htmlFor="y" className="block text-sm font-medium">Y</label>
+          <select value={selectY} onChange={e => setSelectY(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+            {xyOptions}
+          </select>
+        </div>
+        <div>
+          <button type="submit" onClick={handleSubmit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600">
+            Zoom!
+          </button>
+        </div>
+      </div>
+      <div className={`game-board w-11/12 m-auto grid gap-0 cursor-pointer ${zoom ? 'zoom-'+zoom+'x' : ''}`}>
         {squaresRendered}
       <ReactTooltip id='squaretip'
         getContent={handleTooltipContent}

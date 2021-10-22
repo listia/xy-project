@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 
 const Square = ({x, y, square, contract, handleClaim, handleToggle, showClickPrompt }) => {
   const { account } = useWeb3React();
-  const img = square && square.image_uri && !square.image_uri.includes(".mp") ? square.image_uri : ""
+  const img = square && square.image_uri && !square.image_uri.includes(".mp4") && !square.image_uri.includes(".mov") && !square.image_uri.includes(".webm") ? square.image_uri : ""
   const description = !square && showClickPrompt ? "Click to claim!" : (square && square.owner ? shortenHex(square.owner, 4) : "")
   const color = square && square.color ? square.color : stringToColor(square ? square.owner : null, contract);
   const borderColor = square && square.color ? square.color : stringToBorderColor(square ? square.owner : null, contract);
