@@ -33,7 +33,6 @@ function validParams(numParams, metaverseName, zoom, x, y) {
 function Home() {
   const router = useRouter()
   const { params = [] } = router.query;
-console.log(params)
   const metaverse = params[0];
   const metaverseName = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].name : null;
   const metaverseLink = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].link : null;
