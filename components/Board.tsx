@@ -319,19 +319,11 @@ const Board = (props) => {
             Updating X,Y Coordinates...{rows.count*100/MAX_SIZE}{"%"}<br />
             (Page may be slow while loading on-chain data. Hang tight!)
           </p>
-          {isConnected && (
-            <button className="bg-gray-600 text-gray-800 text-l font-medium py-2 px-4 rounded" disabled>
-              Can&#39;t decide? Claim a random X,Y Coordinate
-            </button>
-          )}
         </div>
       )}
       {isConnected && !loadingBoard && rows.count == MAX_SIZE && (
         <div className="text-center space-y-6">
           <XYTotalSupply handleReload={handleReload} />
-          <button className="bg-og-green hover:bg-og-green-dark text-white text-l font-medium py-2 px-4 rounded" onClick={() => handleRandomClaim()}>
-            Can&#39;t decide? Claim a random X,Y Coordinate
-          </button>
         </div>
       )}
       <div className="game-board w-11/12 m-auto grid gap-0 cursor-pointer">
