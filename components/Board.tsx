@@ -334,11 +334,9 @@ const Board = (props) => {
       ) : null;
     };
 
-  var x_options = [];
-  var y_options = [];
+  var xyOptions = [];
   for (let i = 0; i < MAX_SIZE; i++) {
-    x_options.push(<option key={i} value={i}>{i}</option>);
-    y_options.push(<option key={i} value={i}>{i}</option>);
+    xyOptions.push(<option key={i} value={i}>{i}</option>);
   }
 
   const handleSubmit = async (e) => {
@@ -367,19 +365,11 @@ const Board = (props) => {
             Updating X,Y Coordinates...{rows.count*100/MAX_SIZE}{"%"}<br />
             (Page may be slow while loading on-chain data. Hang tight!)
           </p>
-          {isConnected && (
-            <button className="bg-gray-600 text-gray-800 text-l font-medium py-2 px-4 rounded" disabled>
-              Can&#39;t decide? Claim a random X,Y Coordinate
-            </button>
-          )}
         </div>
       )}
       {isConnected && !loadingBoard && rows.count == MAX_SIZE && (
         <div className="text-center space-y-6">
           <XYTotalSupply handleReload={handleReload} />
-          <button className="bg-og-green hover:bg-og-green-dark text-white text-l font-medium py-2 px-4 rounded" onClick={() => handleRandomClaim()}>
-            Can&#39;t decide? Claim a random X,Y Coordinate
-          </button>
         </div>
       )}
       <div className="flex flex-row space-x-6 items-end justify-center">
@@ -396,18 +386,18 @@ const Board = (props) => {
         <div className="flex flex-row space-x-2 items-center">
           <label htmlFor="x" className="block text-sm font-medium">X</label>
           <select value={selectX} onChange={e => setSelectX(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
-            {x_options}
+            {xyOptions}
           </select>
         </div>
         <div className="flex flex-row space-x-2 items-center">
           <label htmlFor="y" className="block text-sm font-medium">Y</label>
           <select value={selectY} onChange={e => setSelectY(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
-            {y_options}
+            {xyOptions}
           </select>
         </div>
         <div>
           <button type="submit" onClick={handleSubmit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600">
-            Zoom
+            Zoom!
           </button>
         </div>
       </div>
