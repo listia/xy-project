@@ -1,15 +1,17 @@
-import type { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import useXYTotalSupply from "../hooks/useXYTotalSupply";
-import { parseBalance, XYContractAddress, MAX_SIZE } from "../util";
+import { MAX_SIZE } from "../util";
 
 const XYTotalSupply = ({ handleReload }) => {
-  const { account } = useWeb3React<Web3Provider>();
-  const { data } = useXYTotalSupply(account, XYContractAddress);
+  const { account, library } = useWeb3React();
+  const isConnected = typeof account === "string" && !!library;
 
   return (
     <p>
-      Total Claimed Coordinates: <b>{parseBalance(data ?? 0, 0, 0)}/{MAX_SIZE*MAX_SIZE}</b> (<a href="#" onClick={e => handleReload(e)}>sync with blockchain</a>)
+      Total X,Y Coordinates: <b>{MAX_SIZE*MAX_SIZE}</b>
+      {isConnected && (
+        <>&nbsp;(<a href="#" onClick={e => handleReload(e)}>sync with blockchain</a>)</>
+      )}
     </p>
   );
 };

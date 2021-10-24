@@ -1,11 +1,8 @@
 import { useRouter } from 'next/router'
 import Square from "../components/Square";
-import useXYClaim from "../hooks/useXYClaim";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
 import { XYContractAddress, MAX_SIZE, getRandomNullIndex } from "../util";
 import React, { useState, useReducer, useEffect } from 'react';
-import { Web3Provider } from "@ethersproject/providers";
-import { useWeb3React } from "@web3-react/core";
 import XYTotalSupply from "../components/XYTotalSupply";
 import * as rax from 'retry-axios';
 import axios from "axios";
@@ -22,11 +19,7 @@ const Board = (props) => {
   const ReactTooltip = dynamic(() => import("react-tooltip"), {
     ssr: false,
   });
-  const claim = useXYClaim( );
   const ownerOf = useXYOwnerOf();
-
-  const { account, library } = useWeb3React();
-  const isConnected = typeof account === "string" && !!library;
 
   const getAssetsURL = '/api/getAssets';
   const getBoardURL = '/api/getBoard';
@@ -83,34 +76,6 @@ const Board = (props) => {
     setRows({type: 'reset', count: 0})
     updateOwners();
   }
-
-  const handleRandomClaim = async () => {
-    var tokenId = getRandomNullIndex(squares) + 1; // tokenId is array index + 1
-    try {
-      if (tokenId > 0) {
-        const sig = await claim((tokenId - 1) % MAX_SIZE, Math.floor((tokenId - 1) / MAX_SIZE));
-      } else {
-      }
-    } catch (error) {
-      // Do nothing
-    }
-  }
-
-  const handleClaim = async (x, y) => {
-    try {
-      const sig = await claim(x, y);
-    } catch (error) {
-      // Do nothing
-    }
-    if (isConnected) {
-      // visually show that the squre is pending
-      setSquares({ type: 'update',
-                   index: (y*MAX_SIZE)+x,
-                   owner: "..",
-                   color: "",
-                   image_uri: ""});
-    }
-  };
 
   // toggle image on the square
   const handleToggle = async (x, y) => {
@@ -229,13 +194,11 @@ const Board = (props) => {
   };
 
   const updateOwners = async () => {
-    if (isConnected) {
-      setRows({type: 'reset', count: 0})
-      for (let y = 0; y < MAX_SIZE; y++) {
-        for (let x = 0; x < MAX_SIZE; x++) {
-          checkOwner(x,y);
-          await sleep(5);
-        }
+    setRows({type: 'reset', count: 0})
+    for (let y = 0; y < MAX_SIZE; y++) {
+      for (let x = 0; x < MAX_SIZE; x++) {
+        checkOwner(x,y);
+        await sleep(5);
       }
     }
   }
@@ -282,7 +245,7 @@ const Board = (props) => {
   }, []);
 
   function renderSquare(x, y) {
-    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleClaim={handleClaim} handleToggle={handleToggle} key={`sq-${x}-${y}`} showClickPrompt={isConnected && !loadingBoard && rows.count == MAX_SIZE} />;
+    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={props.contract} handleToggle={handleToggle} key={`${x}-${y}`} />;
   }
 
   function getIStart(zoom, center) {
@@ -364,7 +327,7 @@ const Board = (props) => {
           </p>
         </div>
       )}
-      {isConnected && !loadingBoard && rows.count == MAX_SIZE && (
+      {!loadingBoard && rows.count == MAX_SIZE && (
         <div className="text-center space-y-6">
           <XYTotalSupply handleReload={handleReload} />
         </div>

@@ -32,7 +32,8 @@ function validParams(numParams, metaverseName, zoom, x, y) {
 
 function Home() {
   const router = useRouter()
-  const { params = [] } = router.query;
+  const params = router.query.params || []
+  const isReady = router.isReady || false
   const metaverse = params[0];
   const metaverseName = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].name : null;
   const metaverseLink = metaverse && METAVERSE[metaverse.toString()] ? METAVERSE[metaverse.toString()].link : null;
@@ -64,13 +65,7 @@ function Home() {
       <main className="p-8 opacity-90">
         <div className="flex flex-col items-center space-y-6">
 
-          {metaverseName && (
-            <MetaverseHead metaverseName={metaverseName} metaverseLink={metaverseLink} />
-          )}
-
-          {!metaverseName && (
-            <XYHead />
-          )}
+          <XYHead metaverseName={metaverseName} metaverseLink={metaverseLink} />
 
           {isConnected && (
             <section className="w-full space-y-6">
@@ -89,12 +84,17 @@ function Home() {
             </section>
           )}
 
-          {metaverseName && (
-            <Game contract={METAVERSE[metaverse.toString()].contract} metaverse={metaverse} zoom={zoom} x={x} y={y} />
+          {isReady && params.length == 0 && (
+            <Game />
           )}
-
-          {!metaverseName && (
+          {isReady && params.length == 1 && (
+            <Game contract={METAVERSE[metaverse.toString()].contract} metaverse={metaverse} />
+          )}
+          {isReady && params.length == 3 && (
             <Game zoom={zoom} x={x} y={y} />
+          )}
+          {isReady && params.length == 4 && (
+            <Game contract={METAVERSE[metaverse.toString()].contract} metaverse={metaverse} zoom={zoom} x={x} y={y} />
           )}
 
           <Footer />
