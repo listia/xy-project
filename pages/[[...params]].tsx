@@ -4,7 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 import Account from "../components/Account";
 import ETHBalance from "../components/ETHBalance";
-import MetaverseHead from "../components/MetaverseHead";
 import XYHead from "../components/XYHead";
 import XYBalance from "../components/XYBalance";
 import Footer from "../components/Footer";

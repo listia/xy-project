@@ -3,6 +3,8 @@ import Square from "../components/Square";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
 import { XYContractAddress, MAX_SIZE, getRandomNullIndex } from "../util";
 import React, { useState, useReducer, useEffect } from 'react';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 import XYTotalSupply from "../components/XYTotalSupply";
 import * as rax from 'retry-axios';
 import axios from "axios";
@@ -20,6 +22,8 @@ const Board = (props) => {
     ssr: false,
   });
   const ownerOf = useXYOwnerOf();
+
+  const { account } = useWeb3React<Web3Provider>();
 
   const getAssetsURL = '/api/getAssets';
   const getBoardURL = '/api/getBoard';
