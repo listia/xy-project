@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default async (req, res) => {
-  const openseaAssetURL = "https://api.opensea.io/api/v1/assets" + (req.query.contract ? "" : "?order_direction=desc&order_by=sale_price")
+  const openseaAssetURL = "https://api.opensea.io/api/v1/assets" + (req.query.contract ? "" : "?order_direction=desc&order_by=sale_count")
   console.log("getAssets from opensea: " + JSON.stringify(req.query, null, 2))
   if (req.method == 'GET' && req.query.owner) {
     console.log("getting Assets from opensea...");
