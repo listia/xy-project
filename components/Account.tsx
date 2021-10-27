@@ -53,9 +53,9 @@ const Account = ({ triedToEagerConnect }: Props) => {
       (window as any)?.web3;
 
     return (
-      <div className="text-center">
+      <>
         {hasMetaMaskOrWeb3Available ? (
-          <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-3 px-5 rounded"
+          <button className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-og-green hover:bg-og-green-dark text-white"
             onClick={() => {
               setConnecting(true);
 
@@ -74,11 +74,11 @@ const Account = ({ triedToEagerConnect }: Props) => {
               : "Connect to Wallet"}
           </button>
         ) : (
-          <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-3 px-5 rounded" onClick={() => onboarding.current?.startOnboarding()}>
+          <button className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-og-green hover:bg-og-green-dark text-white" onClick={() => onboarding.current?.startOnboarding()}>
             Install Metamask
           </button>
         )}
-      </div>
+      </>
     );
   }
 

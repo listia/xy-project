@@ -12,6 +12,7 @@ module.exports = {
         'og-green': '#1da045',
         'og-green-dark': '#108e36',
         'bg-black': '#2a2a2a',
+        'text-white': '#e9e9e9',
       },
     },
   },
