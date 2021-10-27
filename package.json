@@ -16,6 +16,8 @@
     "@ethersproject/providers": "^5.4.4",
     "@ethersproject/units": "^5.4.0",
     "@ethersproject/wallet": "^5.4.0",
+    "@headlessui/react": "^1.4.1",
+    "@heroicons/react": "^1.0.5",
     "@metamask/onboarding": "^1.0.1",
     "@tailwindcss/forms": "^0.3.4",
     "@web3-react/core": "^6.1.9",

@@ -2,10 +2,9 @@ import { useRouter } from 'next/router'
 import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
 import Link from "next/link";
-import Account from "../components/Account";
+import Header from "../components/Header";
 import ETHBalance from "../components/ETHBalance";
 import XYHead from "../components/XYHead";
-import XYBalance from "../components/XYBalance";
 import Footer from "../components/Footer";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { METAVERSE, MAX_SIZE } from "../util";
@@ -61,27 +60,12 @@ function Home() {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Head>
 
-      <main className="p-8 opacity-90">
-        <div className="flex flex-col items-center space-y-6">
+      <Header triedToEagerConnect={triedToEagerConnect} isConnected={isConnected} />
+
+      <main className="p-8">
+        <div className="flex flex-col items-center space-y-5">
 
           <XYHead metaverseName={metaverseName} metaverseLink={metaverseLink} />
-
-          {isConnected && (
-            <section className="w-full space-y-6">
-              <div className="text-center">
-                <Account triedToEagerConnect={triedToEagerConnect} />
-                <XYBalance />
-              </div>
-            </section>
-          )}
-
-          {!isConnected && (
-            <section className="w-full space-y-6">
-              <div className="text-center">
-                <Account triedToEagerConnect={triedToEagerConnect} />
-              </div>
-            </section>
-          )}
 
           {isReady && params.length == 0 && (
             <Game />
