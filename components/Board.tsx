@@ -228,6 +228,9 @@ const Board = (props) => {
                                squares[(y*MAX_SIZE)+x].image_uri);
         loadAssets((y*MAX_SIZE)+x, owner);
       }
+      else if (owner && !squares[(y*MAX_SIZE)+x].image_uri) {
+        loadAssets((y*MAX_SIZE)+x, owner);
+      }
     } catch (error) {
       // x,y token not minted yet, which is ok
       if (String(error).includes("nonexistent token")) {
