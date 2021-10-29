@@ -1,5 +1,5 @@
 import useXYClaim from "../hooks/useXYClaim";
-import { XYContractAddress, stringToColor, stringToBorderColor, MAX_SIZE, shortenHex, METAVERSE_COLORS } from "../util";
+import { XYContractAddress, stringToColor, stringToBorderColor, MAX_SIZE, shortenHex, metaverseColors } from "../util";
 import { useWeb3React } from "@web3-react/core";
 
 const Square = ({x, y, square, contract, handleToggle }) => {
@@ -20,7 +20,7 @@ const Square = ({x, y, square, contract, handleToggle }) => {
     <div data-for='squaretip'
          data-tip={`(${x},${y})|${img}|${description}`}
          className={`sq ${square && square.owner ? 'cl' : ''}`}
-         style={img != "" ? {backgroundImage: `url(${img})`, borderColor: `${contract ? METAVERSE_COLORS[contract].borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}}
+         style={img != "" ? {backgroundImage: `url(${img})`, borderColor: `${contract ? metaverseColors(contract).borderColor : ''}`} : {backgroundColor: color, borderColor: borderColor}}
          onClick={() => handleClick()}>
     </div>
   );
