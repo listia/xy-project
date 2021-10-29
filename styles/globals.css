@@ -38,9 +38,9 @@ a {
 /* sq = Square */
 .sq {
   position: relative;
-  border: 1px solid #108e36;
+  border: 1px solid #2a2a2a;
   box-sizing: border-box;
-  background-color: #1da045;
+  background-color: #3a3a3a;
   background-size: contain;
 }
 /* Claimed */
