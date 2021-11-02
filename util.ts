@@ -22,24 +22,55 @@ const ETHERSCAN_PREFIXES = {
 };
 
 export const METAVERSE = {
-  "NFTWorlds": {name: "NFT Worlds", link: "https://opensea.io/collection/nft-worlds?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af"},
-  "BAYC": {name: "Bored Ape Yacht Club", link: "https://opensea.io/collection/boredapeyachtclub?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"},
-  "MAYC": {name: "Mutant Ape Yacht Club", link: "https://opensea.io/collection/mutant-ape-yacht-club?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6"},
-  "CryptoPunks": {name: "CryptoPunks", link: "https://opensea.io/collection/cryptopunks?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB"},
-  "CryptoKitties": {name: "CryptoKitties", link: "https://opensea.io/collection/cryptokitties?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"},
-  "KaijuKingz": {name: "Kaiju Kingz", link: "https://opensea.io/collection/kaiju-kingz?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83"},
-  "nproject": {name: "The n project", link: "https://opensea.io/collection/n-project?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833", contract: "0x05a46f1E545526FB803FF974C790aCeA34D1f2D6"},
+  "NFTWorlds": {
+    name: "NFT Worlds",
+    link: "https://opensea.io/collection/nft-worlds?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af"
+  },
+  "BAYC": {
+    name: "Bored Ape Yacht Club",
+    link: "https://opensea.io/collection/boredapeyachtclub?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+  },
+  "MAYC": {
+    name: "Mutant Ape Yacht Club",
+    link: "https://opensea.io/collection/mutant-ape-yacht-club?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6"
+  },
+  "CryptoPunks": {
+    name: "CryptoPunks",
+    link: "https://opensea.io/collection/cryptopunks?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB"
+  },
+  "CryptoKitties": {
+    name: "CryptoKitties",
+    link: "https://opensea.io/collection/cryptokitties?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
+  },
+  "KaijuKingz": {
+    name: "Kaiju Kingz",
+    link: "https://opensea.io/collection/kaiju-kingz?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83"
+  },
+  "nproject": {
+    name: "The n project",
+    link: "https://opensea.io/collection/n-project?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x05a46f1E545526FB803FF974C790aCeA34D1f2D6"
+  },
 };
 
+// Custom metaverse color schemes
 export const METAVERSE_COLORS = {
   "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af": {borderColor: "#2A2A2A", claimedColor: "#005EB8", claimedBorderColor: "#005EB8"},
-  "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
-  "0x60E4d786628Fea6478F785A6d7e704777c86a7c6": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
-  "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
-  "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
-  "0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
-  "0x05a46f1E545526FB803FF974C790aCeA34D1f2D6": {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"},
 };
+
+export function metaverseColors(contract) {
+  if(METAVERSE_COLORS[contract]) {
+    return METAVERSE_COLORS[contract];
+  }
+  // Default color scheme
+  return {borderColor: "#2A2A2A", claimedColor: "#3a3a3a", claimedBorderColor: "#2A2A2A"};
+}
 
 export function formatEtherscanLink(
   type: "Account" | "Transaction",
@@ -63,7 +94,7 @@ export function stringToColor(str, contract) {
       return "#3a3a3a"
     }
     if (contract) {
-      return METAVERSE_COLORS[contract].claimedColor;
+      return metaverseColors(contract).claimedColor;
     }
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -82,7 +113,7 @@ export function stringToBorderColor(str, contract) {
       return "#2A2A2A"
     }
     if (contract) {
-      return METAVERSE_COLORS[contract].claimedBorderColor;
+      return metaverseColors(contract).claimedBorderColor;
     }
     return "#2A2A2A";
 }
