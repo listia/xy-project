@@ -131,7 +131,7 @@ const Board = (props) => {
       }).then((response) => {
         // @ts-ignore
         assets = response.data.assets;
-        cachedAssets.push({owner: owner, assets: assets});
+        cachedAssets.push({owner: owner, assets:JSON.parse(JSON.stringify(assets))});
       }).catch(error => {
         console.log(error);
       })
