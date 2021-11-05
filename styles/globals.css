@@ -42,6 +42,8 @@ a {
   box-sizing: border-box;
   background-color: #3a3a3a;
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 /* Claimed */
 .cl {

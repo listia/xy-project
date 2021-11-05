@@ -65,6 +65,7 @@ const Header = (props) => {
                   width={28}
                   quality={100}
                   className=""
+                  alt="menu"
                 />
               </Menu.Button>
               <Transition

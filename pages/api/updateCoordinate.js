@@ -12,11 +12,16 @@ export default async (req, res) => {
     }
     console.log("updating Coordinate in Collection: " + collection_name)
 
+    let data = { token_id: req.body.token_id, image_uri: req.body.image_uri }
+    if (!req.body.contract) {
+      data = { token_id: req.body.token_id, owner: req.body.owner, color: req.body.color, image_uri: req.body.image_uri }
+    }
+
     let query = await faunaClient.query(
       // update OR create a coordinate based on the token_id
       q.Let({
           match: q.Match(q.Index(index_name), req.body.token_id),
-          data: { token_id: req.body.token_id, owner: req.body.owner, color: req.body.color, image_uri: req.body.image_uri }
+          data: data
         },
         q.If(
           q.Exists(q.Var('match')),
