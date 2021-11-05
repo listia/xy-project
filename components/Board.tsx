@@ -308,7 +308,6 @@ const Board = (props) => {
       }
       // EXISTING owner, but no image set yet
       else if (owner && !squares[(y*MAX_SIZE)+x].image_uri) {
-        await updateAssets(owner);
         loadCachedAssets((y*MAX_SIZE)+x, owner);
       }
       // OWNER is the one requesting the update - then sync their assets for them
