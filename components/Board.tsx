@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Squares from "../components/Squares";
+import StaticSquares from "../components/StaticSquares";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
 import { XYContractAddress, MAX_SIZE, getRandomNullIndex } from "../util";
 import React, { useState, useReducer, useEffect } from 'react';
@@ -25,6 +26,7 @@ const Board = (props) => {
   const getBoardAssetsURL = '/api/getBoardAssets';
   const updateCoordinateURL = '/api/updateCoordinate';
   const updateAssetsURL = '/api/updateAssets';
+  const createGridImageURL = '/api/createGridImage';
 
   const [squares, setSquares] = useReducer(squaresReducer, null, function getInitialState(filler) {
     const object = Array(MAX_SIZE*MAX_SIZE).fill(filler);
@@ -176,6 +178,18 @@ const Board = (props) => {
     })
   };
 
+  // fetch and cache assets for this user (from Opensea)
+  const createGridImage = async () => {
+    await axios({
+      method: 'GET',
+      url: createGridImageURL
+    }).then((response) => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+
   const loadCachedBoard = async () => {
     const interceptorId = rax.attach(); // retry logic for axios
     axios({
@@ -280,6 +294,7 @@ const Board = (props) => {
         await sleep(5);
       }
     }
+    createGridImage();
   }
 
   const checkOwner = async (x, y) => {
@@ -329,7 +344,6 @@ const Board = (props) => {
 
   useEffect(() => {
     loadCachedBoard();
-
     return () => {
     }
   }, []);
@@ -401,11 +415,16 @@ const Board = (props) => {
           </button>
         </div>
       </div>
-      <div id="squares" className={`${props.zoom ? 'zoom-'+props.zoom+'x' : 'game-board'} w-11/12 m-auto grid gap-0 cursor-pointer`}>
-        {!loadingBoard && (
+      {(props.zoom === undefined || props.zoom === 1) && !props.metaverse && !router.query.live && (
+        <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
+          <StaticSquares squares={squares} contract={props.contract} />
+        </div>
+      )}
+      {((props.zoom !== undefined && props.zoom !== 1) || props.metaverse || router.query.live === "1") && !loadingBoard && (
+        <div id="squares" className={`${props.zoom ? 'zoom-'+props.zoom+'x' : 'game-board'} w-11/12 m-auto grid gap-0 cursor-pointer`}>
           <Squares squares={squares} updatedAt={squaresUpdatedAt} zoom={props.zoom} x={props.x} y={props.y} contract={props.contract} handleToggle={handleToggle} />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

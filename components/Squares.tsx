@@ -55,7 +55,7 @@ const Squares = ({squares, updatedAt, zoom, x, y, contract, handleToggle }) => {
 
   var squaresRendered = [];
   for (var i = iStart; i <= iEnd; i++) {
-    console.log("render")
+    //console.log("render")
     for (var j = jStart; j <= jEnd; j++) {
       squaresRendered.push(renderSquare(j, i, squares, contract, handleToggle));
     }
@@ -66,7 +66,7 @@ const Squares = ({squares, updatedAt, zoom, x, y, contract, handleToggle }) => {
       {squaresRendered}
       <ReactTooltip id='squaretip'
         getContent={handleTooltipContent}
-        effect={'solid'}
+        effect={'float'}
         place={'top'}
         border={false}
         type={'dark'}
