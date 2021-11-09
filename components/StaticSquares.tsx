@@ -84,7 +84,7 @@ const StaticSquares = ({squares, contract }) => {
 
   return (
     <>
-      <Img
+      <img
         className={`cursor-pointer`}
         src="https://assets.nfty.dev/xy/the_grid.png"
         alt="The GRID"
