@@ -4,7 +4,7 @@ import { faunaClient } from '../../../lib/fauna';
 import { MAX_SIZE } from "../../../util";
 import * as rax from 'retry-axios';
 
-const updateAssetsURL = 'http://localhost:3000/api/updateAssets';
+const updateAssetsURL = 'https://xyproject.io/api/updateAssets';
 
 const updateAssets = async (owner) => {
   const interceptorId = rax.attach(); // retry logic for axios

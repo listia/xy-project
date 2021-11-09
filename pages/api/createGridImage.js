@@ -1,12 +1,7 @@
 import chromium from 'chrome-aws-lambda'
-import AWS from 'aws-sdk'
+import axios from "axios";
 
-const S3 = new AWS.S3({
-	credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-	}
-})
+const uploadImageURL = 'https://xyproject.io/api/uploadGridImage';
 
 async function getBrowserInstance() {
 	const executablePath = await chromium.executablePath
@@ -19,8 +14,8 @@ async function getBrowserInstance() {
 			args: chromium.args,
 			headless: true,
 			defaultViewport: {
-				width: 4000,
-				height: 4000
+				width: 2000,
+				height: 2000
 			},
 			ignoreHTTPSErrors: true
 		})
@@ -30,14 +25,28 @@ async function getBrowserInstance() {
 	return chromium.puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: {
-			width: 4000,
-			height: 4000
+			width: 2000,
+			height: 2000
 		},
 		executablePath,
 		headless: chromium.headless,
 		ignoreHTTPSErrors: true
 	})
 }
+
+const uploadImage = async (imageBuffer) => {
+  await axios({
+    method: 'POST',
+    url: uploadImageURL,
+    data: {
+      image: imageBuffer
+    }
+  }).then((response) => {
+    console.log(response);
+  }).catch(error => {
+    console.log(error);
+  })
+};
 
 export default async (req, res) => {
 	const url = "https://xyproject.io?live=1"//req.body.url
@@ -60,40 +69,16 @@ export default async (req, res) => {
     await page.setDefaultNavigationTimeout(0);
 		await page.goto(url, {waitUntil: 'networkidle0'})
     const el = await page.$('#squares');
-		const imageBuffer = await el.screenshot({type: 'png'})
+		let imageBuffer = await el.screenshot({encoding: 'base64'})
+    imageBuffer = 'data:image/png;base64,' + imageBuffer;
 
-		const fileName = 'xy/the_grid.png'
+    await uploadImage(imageBuffer);
 
-		const params = {
-			Bucket: 'assets.nfty.dev',
-			Key: fileName,
-			Body: imageBuffer
-		}
-
-		S3.upload(params, (error, data) => {
-			console.log(error, data)
-			if (error) {
-				return res.json({
-					status: 'error',
-					error: error.message || 'Something went wrong'
-				})
-			}
-
-			const params = {
-				Bucket: 'assets.nfty.dev',
-				Key: fileName,
-				Expires: 60
-			}
-
-			const signedURL = S3.getSignedUrl('getObject', params)
-
-			res.json({
-				status: 'ok',
-				data: signedURL
-			})
+		res.json({
+			status: 'ok',
+			data: ''
 		})
 
-		// upload this buffer on AWS S3
 	} catch (error) {
 		console.log(error)
 		res.json({
