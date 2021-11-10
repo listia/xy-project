@@ -26,7 +26,6 @@ const Board = (props) => {
   const getBoardAssetsURL = '/api/getBoardAssets';
   const updateCoordinateURL = '/api/updateCoordinate';
   const updateAssetsURL = '/api/updateAssets';
-  const createGridImageURL = '/api/createGridImage';
 
   const [squares, setSquares] = useReducer(squaresReducer, null, function getInitialState(filler) {
     const object = Array(MAX_SIZE*MAX_SIZE).fill(filler);
@@ -178,18 +177,6 @@ const Board = (props) => {
     })
   };
 
-  // fetch and cache assets for this user (from Opensea)
-  const createGridImage = async () => {
-    await axios({
-      method: 'GET',
-      url: createGridImageURL
-    }).then((response) => {
-      console.log(response);
-    }).catch(error => {
-      console.log(error);
-    })
-  };
-
   const loadCachedBoard = async () => {
     const interceptorId = rax.attach(); // retry logic for axios
     axios({
@@ -294,7 +281,6 @@ const Board = (props) => {
         await sleep(5);
       }
     }
-    createGridImage();
   }
 
   const checkOwner = async (x, y) => {

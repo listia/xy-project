@@ -4,6 +4,8 @@ import { faunaClient } from '../../../lib/fauna';
 import { MAX_SIZE } from "../../../util";
 import * as rax from 'retry-axios';
 
+// TODO: move this to custom AWS lambda since it runs too long for Vercel
+
 const updateAssetsURL = 'https://xyproject.io/api/updateAssets';
 
 const updateAssets = async (owner) => {

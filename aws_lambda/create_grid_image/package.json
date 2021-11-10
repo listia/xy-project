@@ -1,0 +1,16 @@
+{
+  "name": "create_grid_image",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gm": "^1.23.1",
+    "image-size": "^1.0.0",
+    "puppeteer-core": "^11.0.0"
+  }
+}
