@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/aws_lambda/create_grid_image/node_modules
 
 # testing
 /coverage
