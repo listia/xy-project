@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 /aws_lambda/create_grid_image/node_modules
+/aws_lambda/create_grid_image/jspm_packages
+/aws_lambda/create_grid_image/.serverless
 
 # testing
 /coverage
