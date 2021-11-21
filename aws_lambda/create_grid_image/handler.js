@@ -136,7 +136,8 @@ exports.capture = async (event, context) => {
     console.log('Checking new image size...')
     const newDimensions = sizeOf(file)
 
-    if ((newDimensions.width > width * 4) && (newDimensions.height > width * 4)) {
+    if ((newDimensions.width > width * 4) && (newDimensions.height > width * 4) &&
+         newDimensions.width > 3000 && newDimensions.height > 3000) {
       console.log('Opening stitched image...')
       const fileStream = await fs.createReadStream(file);
 

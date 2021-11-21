@@ -14,7 +14,7 @@ export default async (req, res) => {
     let query = await faunaClient.query(
       q.Paginate(q.Match(q.Index(all_index_name)), { size: MAX_SIZE * MAX_SIZE })
     ).catch(error => {
-      console.log('getBoard Index Error: %s', error.requestResult);
+      console.log('getBoard Index Error: %s', JSON.stringify(error, null, 2));
     })
 
     if (query && query.data) {

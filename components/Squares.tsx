@@ -4,7 +4,7 @@ import Square from "../components/Square";
 import React from 'react';
 import dynamic from "next/dynamic";
 
-const Squares = ({squares, updatedAt, zoom, x, y, contract, handleToggle }) => {
+const Squares = ({edit, squares, updatedAt, zoom, x, y, contract, handleToggle, handleMove }) => {
   const validZoom = zoom && (x || x == 0) && (y || y == 0);
   const iStart = validZoom ? getIStart(zoom, y) : 0;
   const jStart = validZoom ? getIStart(zoom, x) : 0;
@@ -34,8 +34,8 @@ const Squares = ({squares, updatedAt, zoom, x, y, contract, handleToggle }) => {
       ) : null;
     };
 
-  function renderSquare(x, y, squares, contract, handleToggle) {
-    return <Square x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={contract} handleToggle={handleToggle} key={`${x}-${y}`} />;
+  function renderSquare(edit, x, y, squares, contract, handleToggle, handleMove) {
+    return <Square edit={edit} x={x} y={y} square={squares[(y*MAX_SIZE)+x]} contract={contract} handleToggle={handleToggle} handleMove={handleMove} key={`${x}-${y}`} />;
   }
 
   function getIStart(zoom, center) {
@@ -57,7 +57,7 @@ const Squares = ({squares, updatedAt, zoom, x, y, contract, handleToggle }) => {
   for (var i = iStart; i <= iEnd; i++) {
     //console.log("render")
     for (var j = jStart; j <= jEnd; j++) {
-      squaresRendered.push(renderSquare(j, i, squares, contract, handleToggle));
+      squaresRendered.push(renderSquare(edit, j, i, squares, contract, handleToggle, handleMove));
     }
   }
 
@@ -81,6 +81,7 @@ function propsAreEqual(prevProps, nextProps) {
            prevProps.x === nextProps.x &&
            prevProps.y === nextProps.y &&
            prevProps.contract === nextProps.contract &&
+           prevProps.edit === nextProps.edit &&
            // we can't compare the squares array because both prev and next reference the same data
            prevProps.updatedAt === nextProps.updatedAt)
   console.log("check propsAreEqual: " + x)

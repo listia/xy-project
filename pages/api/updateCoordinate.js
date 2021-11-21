@@ -12,7 +12,7 @@ export default async (req, res) => {
     }
     console.log("updating Coordinate in Collection: " + collection_name)
 
-    let data = { token_id: req.body.token_id, image_uri: req.body.image_uri }
+    let data = { token_id: req.body.token_id, image_uri: req.body.image_uri, contract_token_id: req.body.contract_token_id, token_owner: req.body.token_owner }
     if (!req.body.contract) {
       data = { token_id: req.body.token_id, owner: req.body.owner, color: req.body.color, image_uri: req.body.image_uri }
     }

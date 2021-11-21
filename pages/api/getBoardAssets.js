@@ -14,7 +14,9 @@ async function createNewCollection(all_index_name, unique_index_name, contract) 
         name: all_index_name,
         source: q.Collection(collection_name),
         values: [{field: ["data", "token_id"]},
-                 {field: ["data", "image_uri"]}]
+                 {field: ["data", "image_uri"]},
+                 {field: ["data", "contract_token_id"]},
+                 {field: ["data", "token_owner"]}]
       })
     ).then((ret) => console.log(ret))
     .catch((err) => console.error('CreateAllIndex Error: %s', err))
@@ -47,7 +49,7 @@ export default async (req, res) => {
     let query = await faunaClient.query(
       q.Paginate(q.Match(q.Index(all_index_name)), { size: MAX_SIZE * MAX_SIZE })
     ).catch(error => {
-      console.log('getBoardAssets Index Error: %s', error.requestResult);
+      console.log('getBoardAssets Index Error: %s', JSON.stringify(error, null, 2));
 
       if ( error.requestResult && error.requestResult.statusCode == 400 ) { //not found
         if (req.query.contract) {

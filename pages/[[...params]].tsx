@@ -42,6 +42,8 @@ function Home() {
   const x = (zoomParamsInt[1] || zoomParamsInt[1] == 0) && 0 <= zoomParamsInt[1] && zoomParamsInt[1] < MAX_SIZE ? zoomParamsInt[1] : null;
   const y = (zoomParamsInt[2] || zoomParamsInt[2] == 0) && 0 <= zoomParamsInt[2] && zoomParamsInt[2] < MAX_SIZE ? zoomParamsInt[2] : null;
 
+  const editing = router.query.edit;
+
   const { account, library } = useWeb3React();
 
   const triedToEagerConnect = useEagerConnect();

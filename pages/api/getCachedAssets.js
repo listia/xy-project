@@ -14,7 +14,7 @@ export default async (req, res) => {
         )
       )
     ).catch(error => {
-      console.log('getCachedAssets Index Error: %s', error.requestResult);
+      console.log('getCachedAssets Index Error: %s', JSON.stringify(error, null, 2));
     })
 
     if (query && query.data) {

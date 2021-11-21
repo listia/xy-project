@@ -6,7 +6,7 @@ function Footer() {
       <p className="w-4/5 text-sm text-gray-400 text-center">
         X,Y Project is a fun, community-focused metaverse NFT project.
         Please feel free to use it in any way you want.
-        Claim X,Y corodinates, issue blockchain transactions, and use the NFTs at your own risk.
+        Claim X,Y coordinates, issue blockchain transactions, and use the NFTs at your own risk.
         Full website functionality requries Metamask or a similar wallet plugin.
         We do not track or store your information.
         Ownership data is cached and pulled directly from the public Ethereum blockchain.
