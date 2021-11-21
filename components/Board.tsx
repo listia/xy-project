@@ -7,6 +7,7 @@ import React, { useState, useReducer, useEffect } from 'react';
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import XYTotalSupply from "../components/XYTotalSupply";
+import EditMetaverse from "../components/EditMetaverse";
 import * as rax from 'retry-axios';
 import axios from "axios";
 
@@ -95,6 +96,7 @@ const Board = (props) => {
 
   const toggleEdit = async (e) => {
     e.preventDefault()
+    setMoving(-1)
     if (!router.query.edit) {
       if (selectZoom == 1) {
         router.push((metaverse ? metaverse : "/") + "?edit=1")
@@ -617,9 +619,14 @@ const Board = (props) => {
           </p>
         </div>
       )}
-      {!loadingBoard && rows.count == MAX_SIZE && (
+      {!props.contract && !loadingBoard && rows.count == MAX_SIZE && (
         <div className="text-center space-y-6">
-          <XYTotalSupply contract={props.contract} handleReload={handleReload} toggleEdit={toggleEdit} edit={router.query.edit} />
+          <XYTotalSupply contract={props.contract} handleReload={handleReload} />
+        </div>
+      )}
+      {props.contract && !loadingBoard && rows.count == MAX_SIZE && (
+        <div className="text-center space-y-6">
+          <EditMetaverse toggleEdit={toggleEdit} edit={router.query.edit} />
         </div>
       )}
       <div className="flex flex-row space-x-6 items-end justify-center">

@@ -44,11 +44,11 @@ const Square = ({edit, moving, x, y, square, contract, handleToggle, handleMove 
   let borderColor = square && square.color ? square.color : stringToBorderColor(square ? square.owner : null, contract);
   // moving this coordinate, highlight it
   if (square && moving === ((y*MAX_SIZE) + x)) {
-    borderColor = "#00FF00"
+    borderColor = "#e9e9e9"
   }
   // moving and account owns this XY spot, show as owned by account
   else if (moving !== -1 && square && (account === square.owner)) {
-    borderColor = "#FF0000"
+    borderColor = "#63b3ed"
   }
   // special metaverse colors
   else if (img && contract) {

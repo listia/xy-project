@@ -4,9 +4,10 @@ function Footer() {
       <p>Brought to you by the team @ <a href="https://nftyverse.com" target="_blank" rel="noreferrer">NFTYverse API</a></p>
       <p>This website is <a href="https://github.com/listia/xy-project" target="_blank" rel="noreferrer">Open-Source</a></p>
       <p className="w-4/5 text-sm text-gray-400 text-center">
+        The X,Y Project is a full set of X,Y Coordinates stored on chain, representing a 128x128 grid.
         X,Y Project is a fun, community-focused metaverse NFT project.
         Please feel free to use it in any way you want.
-        Claim X,Y coordinates, issue blockchain transactions, and use the NFTs at your own risk.
+        Claim X,Y Coordinates, issue blockchain transactions, and use the NFTs at your own risk.
         Full website functionality requries Metamask or a similar wallet plugin.
         We do not track or store your information.
         Ownership data is cached and pulled directly from the public Ethereum blockchain.
