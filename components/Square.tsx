@@ -2,7 +2,7 @@ import useXYClaim from "../hooks/useXYClaim";
 import { XYContractAddress, stringToColor, stringToBorderColor, MAX_SIZE, shortenHex, metaverseColors } from "../util";
 import { useWeb3React } from "@web3-react/core";
 
-const Square = ({edit, x, y, square, contract, handleToggle, handleMove }) => {
+const Square = ({edit, moving, x, y, square, contract, handleToggle, handleMove }) => {
   let { account } = useWeb3React();
 
   let img = square && square.image_uri ? square.image_uri : ""
@@ -19,16 +19,16 @@ const Square = ({edit, x, y, square, contract, handleToggle, handleMove }) => {
 
   let description = square && square.owner ? shortenHex(square.owner, 4) : ""
   // prompt about moving
-  if (edit && square && (account === square.token_owner)) {
+  if (edit && moving === -1 && square && (account === square.token_owner)) {
     description = "Click to move NFT"
   }
   // your spots (with someone else's token on it)
   else if (edit && square && (account === square.owner)) {
-    description = "Owned by you"
+    description = "Available (yours)"
   }
   // empty spots
   else if (edit && square && !square.image_uri) {
-    description = "Empty"
+    description = "Available"
   }
   // show token owner's address (not XY owner)
   else if (contract && square && square.token_owner) {
@@ -42,8 +42,12 @@ const Square = ({edit, x, y, square, contract, handleToggle, handleMove }) => {
   }
 
   let borderColor = square && square.color ? square.color : stringToBorderColor(square ? square.owner : null, contract);
-  // editing and account owns this XY spot, show as owned by account
-  if (edit && square && (account === square.owner)) {
+  // moving this coordinate, highlight it
+  if (square && moving === ((y*MAX_SIZE) + x)) {
+    borderColor = "#00FF00"
+  }
+  // moving and account owns this XY spot, show as owned by account
+  else if (moving !== -1 && square && (account === square.owner)) {
     borderColor = "#FF0000"
   }
   // special metaverse colors

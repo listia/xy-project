@@ -42,7 +42,7 @@ const Board = (props) => {
 
   const [loadingBoard, setLoadingBoard] = useState(true);
 
-  var moving = -1;
+  const [moving, setMoving] = useState(-1);
 
   var cachedAssets = []
 
@@ -115,7 +115,7 @@ const Board = (props) => {
       // start moving if not already moving and you own this token
       if (moving == -1 && squares[index].token_owner === account) {
         console.log("Start moving token at: " + x + "," + y)
-        moving = index
+        setMoving(index)
       }
       // already moving and clicked on a spot you own or a free one
       else if (moving >= 0 && (squares[index].owner === account || !squares[index].token_owner)) {
@@ -155,7 +155,7 @@ const Board = (props) => {
                                destination_square.image_uri,
                                destination_square.token_id,
                                destination_square.token_owner);
-        moving = -1
+        setMoving(-1)
       }
     }
   }
@@ -404,9 +404,9 @@ const Board = (props) => {
                      index: (y*MAX_SIZE)+x,
                      owner: owner,
                      color: null,
-                     image_uri: "",
-                     token_id: null,
-                     token_owner: null});
+                     image_uri: props.contract ? squares[(y*MAX_SIZE)+x].image_uri : "",
+                     token_id: props.contract ? squares[(y*MAX_SIZE)+x].token_id : null,
+                     token_owner: props.contract ? squares[(y*MAX_SIZE)+x].token_owner : null});
         setSquaresUpdatedAt(Date.now());
         updateCachedCoordinate((y*MAX_SIZE)+x,
                                owner,
@@ -415,10 +415,12 @@ const Board = (props) => {
                                squares[(y*MAX_SIZE)+x].token_id,
                                squares[(y*MAX_SIZE)+x].token_owner);
         await updateAssets(owner);
-        loadCachedAssets((y*MAX_SIZE)+x, owner, false);
+        if (!props.contract) {
+          loadCachedAssets((y*MAX_SIZE)+x, owner, false);
+        }
       }
       // EXISTING owner, but no image set yet
-      else if (owner && !squares[(y*MAX_SIZE)+x].image_uri) {
+      else if (!props.contract && owner && !squares[(y*MAX_SIZE)+x].image_uri) {
         loadCachedAssets((y*MAX_SIZE)+x, owner, false);
       }
       // OWNER is the one requesting the update - then sync their assets for them
@@ -656,7 +658,7 @@ const Board = (props) => {
       )}
       {((props.zoom !== undefined && props.zoom !== 1) || props.metaverse || router.query.live === "1" || router.query.edit === "1") && !loadingBoard && (
         <div id="squares" className={`${props.zoom ? 'zoom-'+props.zoom+'x' : 'game-board'} w-11/12 m-auto grid gap-0 cursor-pointer`}>
-          <Squares edit={router.query.edit} squares={squares} updatedAt={squaresUpdatedAt} zoom={props.zoom} x={props.x} y={props.y} contract={props.contract} handleToggle={handleToggle} handleMove={handleMove} />
+          <Squares edit={router.query.edit} moving={moving} squares={squares} updatedAt={squaresUpdatedAt} zoom={props.zoom} x={props.x} y={props.y} contract={props.contract} handleToggle={handleToggle} handleMove={handleMove} />
         </div>
       )}
     </div>
