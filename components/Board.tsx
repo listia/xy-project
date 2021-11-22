@@ -536,6 +536,8 @@ const Board = (props) => {
     }
   }
 
+  // Make sure the board is filled with all the possible tokens
+  // Also delete any duplicates if found
   const placeAllTokens = async () => {
     shuffle(GOT_MAP_TOKEN_IDS)
     const MAX_ASSETS = 50;
@@ -563,7 +565,7 @@ const Board = (props) => {
           let token_owner = assets[i].owner
 
           console.log("Looking for existing square with token_id: " + token_id);
-          let found = squares.find(x => x.token_id === token_id)
+          let found = squares.filter(x => x.token_id === token_id)
           console.log("Value of found: " + JSON.stringify(found, null, 2));
           if (!found) {
             let squareIndex = GOT_MAP_TOKEN_IDS[spot_index] - 1
@@ -591,6 +593,28 @@ const Board = (props) => {
                                    image_uri,
                                    token_id,
                                    token_owner);
+          }
+          else {
+            // Make sure there are no duplicates on the board - delete them if found
+            while (found.length > 1) {
+              console.log("Deleting duplicates. Value of found: " + JSON.stringify(found, null, 2));
+              let squareIndex = squares.findIndex(x => x.token_id === token_id)
+              setSquares({ type: 'update',
+                           index: squareIndex,
+                           owner: squares[squareIndex].owner,
+                           color: squares[squareIndex].color,
+                           image_uri: null,
+                           token_id: null,
+                           token_owner: null});
+              setSquaresUpdatedAt(Date.now());
+              updateCachedCoordinate(squareIndex,
+                                     squares[squareIndex].owner,
+                                     squares[squareIndex].color,
+                                     null,
+                                     null,
+                                     null);
+              found = squares.filter(x => x.token_id === token_id)
+            }
           }
         }
 
