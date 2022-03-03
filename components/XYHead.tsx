@@ -6,7 +6,7 @@ const XYHead = (props) => {
       {props.metaverseName && (
         <>
           <h1 className="text-2xl font-bold">
-            <a href={props.metaverseLink} target="_blank" rel="noreferrer">{props.metaverseName}</a> Metaverse @ X,Y Project
+            <a href={props.metaverseLink} target="_blank" rel="noreferrer">{props.metaverseName}</a> Metaverse Map
           </h1>
         </>
       )}
@@ -14,12 +14,12 @@ const XYHead = (props) => {
       {props.metaverseName && (
         <>
         <section className="text-center">
-          <p>A map of the <b>{props.metaverseName} Metaverse</b>, built by the {props.metaverseName} community! More fun coming soon...</p>
+          <p>A map of the <b>{props.metaverseName} Metaverse</b>, built by the {props.metaverseName} community!</p>
         </section>
         <section className="text-left">
           <ul>
-            <li>&#183; {props.metaverseName} owners: move to any available X,Y Coordinate</li>
-            <li>&#183; X,Y Project owners: exclusive rights to your own Coordinates</li>
+            <li>&#183; <b>{props.metaverseName} owners</b>: place your NFTs on any X,Y Coordinate with no {props.metaverseName}</li>
+            <li>&#183; <b>X,Y Project owners</b>: rights to use your own Coordinates & kick off others</li>
           </ul>
         </section>
         </>
@@ -27,11 +27,10 @@ const XYHead = (props) => {
       {!props.metaverseName && (
         <>
         <section className="text-center">
-          <p>The X,Y Project is a full set of X,Y Coordinates stored on chain, representing a 128x128 grid.</p>
-          <p>Use X,Y Project in any way you want. For example: maps, tiles, locations, games, virtual worlds, and more.</p>
+        <p><b>X,Y Project</b> is a set of on-chain NFT Plots (X,Y Coordinates) representing a 128x128 GRID.</p>
         </section>
         <h4 className="font-medium">
-          Choose a Metaverse:&nbsp;&nbsp;
+          Choose a Metaverse Map:&nbsp;&nbsp;
           <Link href="/">X,Y Project</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
           <Link href="/NFTWorlds">NFT Worlds</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
           more coming soon...

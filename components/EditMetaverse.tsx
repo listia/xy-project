@@ -12,15 +12,15 @@ const EditMetaverse = ({ toggleEdit, edit }) => {
         {!edit && (
           <>
             <button type="submit" onClick={toggleEdit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600">
-              Move your NFTs
+              Click to Place your NFTs
             </button>
-            &nbsp;(tip: zoom in)
+            &nbsp;(tip: zoom in first)
           </>
         )}
         {edit && (
           <>
             <button type="submit" onClick={toggleEdit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600">
-              Finish Moving
+              Click to Finish Placing
             </button>
           </>
         )}

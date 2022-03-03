@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Squares from "../components/Squares";
 import StaticSquares from "../components/StaticSquares";
 import useXYOwnerOf from "../hooks/useXYOwnerOf";
-import { XYContractAddress, MAX_SIZE, getRandomNullIndex, GOT_MAP_TOKEN_IDS } from "../util";
+import { XYContractAddress, MAX_SIZE, getRandomNullOrEmptyTokenIndex, GOT_MAP_TOKEN_IDS } from "../util";
 import React, { useState, useReducer, useEffect } from 'react';
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
@@ -108,6 +108,8 @@ const Board = (props) => {
     else {
       handleSubmit(e)
     }
+    //initOwnedCachedAssets();
+    initConnectedWalletAssets();
   }
 
   // moving images in metaverses
@@ -201,7 +203,7 @@ const Board = (props) => {
     }
   };
 
-  const loadCachedAssets = async (squareIndex, owner, unique) => {
+  const fetchCachedAssets = async (owner) => {
     let assets = []
     let cachedOwner = cachedAssets.find(x=>x.owner===owner);
     if (!cachedOwner) {
@@ -226,6 +228,13 @@ const Board = (props) => {
     else {
       assets = cachedOwner.assets;
     }
+
+    return assets;
+  }
+
+  const loadCachedAssets = async (squareIndex, owner, unique) => {
+    let assets = await fetchCachedAssets(owner)
+
     if (assets && assets.length > 0) {
       console.log("loadCachedAssets found some assets")
       if (squares[squareIndex] == null) {
@@ -455,7 +464,52 @@ const Board = (props) => {
       router.push((metaverse ? metaverse+"/" : "")+selectZoom+"/"+selectX+"/"+selectY)
     }
   }
-  
+
+  // add any assets from this connected wallet to the board if needed
+  // - populates the board with this user's assets when visiting a metaverse
+  // for the first time, if they are part of this metaverse
+  const initConnectedWalletAssets = async () => {
+    let assets = await fetchCachedAssets(account)
+
+    if (assets && assets.length > 0) {
+      console.log("initConnectedWalletAssets found some assets")
+      let i = 0
+      while (i < assets.length) {
+        console.log("loadCachedAssets looking for token_id: " + assets[i].token_id)
+        let found = squares.find(x => x.token_id === assets[i].token_id)
+        if (!found) {
+          console.log("initConnectedWalletAssets not found!")
+          // add it to the board randomly
+          const squareIndex = getRandomNullOrEmptyTokenIndex(squares);
+
+          if (squares[squareIndex] == null) {
+            squares[squareIndex] = {}
+          }
+
+          console.log("initConnectedWalletAssets random index:" + squareIndex)
+          let image_uri = assets[i].image_uri
+          let token_id = assets[i].token_id
+          let token_owner = account
+          setSquares({ type: 'update',
+                       index: squareIndex,
+                       owner: squares[squareIndex].owner,
+                       color: squares[squareIndex].color,
+                       image_uri: image_uri,
+                       token_id: token_id,
+                       token_owner: token_owner});
+          setSquaresUpdatedAt(Date.now());
+          updateCachedCoordinate(squareIndex,
+                                 squares[squareIndex].owner,
+                                 squares[squareIndex].color,
+                                 image_uri,
+                                 token_id,
+                                 token_owner);
+        }
+        i+=1;
+      }
+    }
+  }
+
   ////////////////////////////////////////////////////////////////////
   /// UTILITY functions used to initialize data or perform maintenance
   const printOwner = async(i) => {
@@ -476,7 +530,7 @@ const Board = (props) => {
       for (let x = 0; x < MAX_SIZE; x++) {
         let square = squares[(y*MAX_SIZE)+x];
         if (square && square.owner && !square.image_uri) {
-          loadCachedAssets((y*MAX_SIZE)+x, square.owner, false);
+          await loadCachedAssets((y*MAX_SIZE)+x, square.owner, true);
         }
         if (x == MAX_SIZE-1) {
           setRows({type: 'increment'})
