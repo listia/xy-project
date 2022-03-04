@@ -84,6 +84,8 @@ export const METAVERSE = {
 // Custom metaverse color schemes
 export const METAVERSE_COLORS = {
   "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af": {borderColor: "#2A2A2A", claimedColor: "#005EB8", claimedBorderColor: "#005EB8"},
+  "0x0e9d6552b85BE180d941f1cA73Ae3E318D2D4F1F": {borderColor: "#2A2A2A", claimedColor: "#005EB8", claimedBorderColor: "#005EB8"},
+  "0x32973908FaeE0Bf825A343000fE412ebE56F802A": {borderColor: "#296600", claimedColor: "#52cc00", claimedBorderColor: "#52cc00"},
 };
 
 export function metaverseColors(contract) {

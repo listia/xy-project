@@ -114,7 +114,8 @@ const Board = (props) => {
     initConnectedWalletAssets();
 
     // utility functions when doing maintenance
-    //placeOwnedCachedAssets();
+    //placeOwnedAssets();
+    //placeAllTokens();
     //updateAllCachedAssets();
   }
 
@@ -578,7 +579,7 @@ const Board = (props) => {
   
   // fill the board with metavers-specific assets that are owned by XY owners
   // useful for setting up the map for new collections we support
-  const placeOwnedCachedAssets = async () => {
+  const placeOwnedAssets = async () => {
     setRows({type: 'reset', count: 0})
     for (let y = 0; y < MAX_SIZE; y++) {
       for (let x = 0; x < MAX_SIZE; x++) {
@@ -678,7 +679,7 @@ const Board = (props) => {
           console.log("Looking for existing square with token_id: " + token_id);
           let found = squares.filter(x => x.token_id === token_id)
           console.log("Value of found: " + JSON.stringify(found, null, 2));
-          if (!found) {
+          if (!found || found.length === 0) {
             let squareIndex = GOT_MAP_TOKEN_IDS[spot_index] - 1
             spot_index += 1;
             while (squares[squareIndex] && squares[squareIndex].token_id) {
