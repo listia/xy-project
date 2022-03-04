@@ -34,6 +34,21 @@ export const METAVERSE = {
     link: "https://opensea.io/collection/nft-worlds?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
     contract: "0xBD4455dA5929D5639EE098ABFaa3241e9ae111Af"
   },
+  "Metroverse": {
+    name: "Metroverse",
+    link: "https://opensea.io/collection/metroverse?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x0e9d6552b85BE180d941f1cA73Ae3E318D2D4F1F"
+  },
+  "WorldwideWebbLand": {
+    name: "Worldwide Webb Land",
+    link: "https://opensea.io/collection/worldwidewebbland?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0xA1D4657e0E6507D5a94d06DA93E94dC7C8c44b51"
+  },
+  "Pixelmon": {
+    name: "Pixelmon G1",
+    link: "https://opensea.io/collection/pixelmongen1?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",
+    contract: "0x32973908FaeE0Bf825A343000fE412ebE56F802A"
+  },
   "BAYC": {
     name: "Bored Ape Yacht Club",
     link: "https://opensea.io/collection/boredapeyachtclub?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833",

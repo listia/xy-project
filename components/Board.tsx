@@ -22,12 +22,14 @@ const Board = (props) => {
 
   let { account } = useWeb3React<Web3Provider>();
 
+  const getAssetsURL = '/api/getAssets';
   const getCachedAssetsURL = '/api/getCachedAssets';
   const getBoardURL = '/api/getBoard';
   const getBoardAssetsURL = '/api/getBoardAssets';
   const updateCoordinateURL = '/api/updateCoordinate';
   const updateAssetsURL = '/api/updateAssets';
   const getOSAssetsByContractURL = '/api/getOSAssetsByContract'
+  const updateAssetsAlchemyURL = '/api/updateAssetsAlchemy';
 
   const [squares, setSquares] = useReducer(squaresReducer, null, function getInitialState(filler) {
     const object = Array(MAX_SIZE*MAX_SIZE).fill(filler);
@@ -46,6 +48,7 @@ const Board = (props) => {
   const [moving, setMoving] = useState(-1);
 
   var cachedAssets = []
+  var liveAssets = []
 
   function squaresReducer(squares, action) {
     switch (action.type) {
@@ -108,8 +111,11 @@ const Board = (props) => {
     else {
       handleSubmit(e)
     }
-    //initOwnedCachedAssets();
     initConnectedWalletAssets();
+
+    // utility functions when doing maintenance
+    //placeOwnedCachedAssets();
+    //updateAllCachedAssets();
   }
 
   // moving images in metaverses
@@ -203,6 +209,34 @@ const Board = (props) => {
     }
   };
 
+  const fetchLiveAssets = async (owner) => {
+    let assets = []
+    let liveOwner = liveAssets.find(x=>x.owner===owner);
+    if (!liveOwner) {
+      const interceptorId = rax.attach(); // retry logic for axios
+      await axios({
+        method: 'GET',
+        url: getAssetsURL,
+        params: { owner: owner,
+                  contract: props.contract},
+        raxConfig: {
+          retry: 2
+        }
+      }).then((response) => {
+        // @ts-ignore
+        assets = response.data.assets;
+        liveAssets.push({owner: owner, assets:JSON.parse(JSON.stringify(assets))});
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+    else {
+      assets = liveOwner.assets;
+    }
+
+    return assets;
+  }
+
   const fetchCachedAssets = async (owner) => {
     let assets = []
     let cachedOwner = cachedAssets.find(x=>x.owner===owner);
@@ -232,11 +266,18 @@ const Board = (props) => {
     return assets;
   }
 
-  const loadCachedAssets = async (squareIndex, owner, unique) => {
-    let assets = await fetchCachedAssets(owner)
+  // places a random asset onto the square
+  // will honor the collection if there is one and also can pull from cache or live
+  const placeRandomAsset = async (squareIndex, owner, unique, cached) => {
+    let assets = []
+    if (cached) {
+      await fetchCachedAssets(owner)
+    } else{
+      await fetchLiveAssets(owner)
+    }
 
     if (assets && assets.length > 0) {
-      console.log("loadCachedAssets found some assets")
+      console.log("placeRandomAsset found some assets")
       if (squares[squareIndex] == null) {
         squares[squareIndex] = {}
       }
@@ -246,10 +287,10 @@ const Board = (props) => {
         // find a new token_id/image_uri to place in the square
         let i = 0
         while (i < assets.length && asset_index == -1) {
-          console.log("loadCachedAssets looking for token_id: " + assets[i].token_id)
+          console.log("placeRandomAsset looking for token_id: " + assets[i].token_id)
           let found = squares.find(x => x.token_id === assets[i].token_id)
           if (!found) {
-            console.log("loadCachedAssets not found!")
+            console.log("placeRandomAsset not found!")
             asset_index = i;
           }
           i+=1;
@@ -427,12 +468,12 @@ const Board = (props) => {
                                squares[(y*MAX_SIZE)+x].token_owner);
         await updateAssets(owner);
         if (!props.contract) {
-          loadCachedAssets((y*MAX_SIZE)+x, owner, false);
+          placeRandomAsset((y*MAX_SIZE)+x, owner, false, true);
         }
       }
       // EXISTING owner, but no image set yet
       else if (!props.contract && owner && !squares[(y*MAX_SIZE)+x].image_uri) {
-        loadCachedAssets((y*MAX_SIZE)+x, owner, false);
+        placeRandomAsset((y*MAX_SIZE)+x, owner, false, true);
       }
       // OWNER is the one requesting the update - then sync their assets for them
       else if (owner && (owner == account)) {
@@ -475,7 +516,7 @@ const Board = (props) => {
       console.log("initConnectedWalletAssets found some assets")
       let i = 0
       while (i < assets.length) {
-        console.log("loadCachedAssets looking for token_id: " + assets[i].token_id)
+        console.log("initConnectedWalletAssets looking for token_id: " + assets[i].token_id)
         let found = squares.find(x => x.token_id === assets[i].token_id)
         if (!found) {
           console.log("initConnectedWalletAssets not found!")
@@ -512,25 +553,38 @@ const Board = (props) => {
 
   ////////////////////////////////////////////////////////////////////
   /// UTILITY functions used to initialize data or perform maintenance
-  const printOwner = async(i) => {
-    try {
-      let owner = await ownerOf(i);
-      if (owner) {
-        console.log("{token_id: " + i + ", address: \"" + owner + "\"}");
+
+  // run through all spots and update their cached assets in the DB,
+  // even if they already have a cached assets entry
+  const updateAllCachedAssets = async () => {
+    let owners = []
+    setRows({type: 'reset', count: 0})
+    for (let y = 0; y < MAX_SIZE; y++) {
+      for (let x = 0; x < MAX_SIZE; x++) {
+        let square = squares[(y*MAX_SIZE)+x];
+        if (square && square.owner) {
+          let foundOwner = owners.find(x=>x===square.owner);
+          if (!foundOwner) {
+            owners.push(square.owner);
+            await updateAssets(square.owner);
+          }
+          if (x == MAX_SIZE-1) {
+            setRows({type: 'increment'})
+          }
+        }
       }
-    } catch (error) {
-      await sleep(5);
-      printOwner(i);
     }
   }
-
-  const initOwnedCachedAssets = async () => {
+  
+  // fill the board with metavers-specific assets that are owned by XY owners
+  // useful for setting up the map for new collections we support
+  const placeOwnedCachedAssets = async () => {
     setRows({type: 'reset', count: 0})
     for (let y = 0; y < MAX_SIZE; y++) {
       for (let x = 0; x < MAX_SIZE; x++) {
         let square = squares[(y*MAX_SIZE)+x];
         if (square && square.owner && !square.image_uri) {
-          await loadCachedAssets((y*MAX_SIZE)+x, square.owner, true);
+          await placeRandomAsset((y*MAX_SIZE)+x, square.owner, true, false);
         }
         if (x == MAX_SIZE-1) {
           setRows({type: 'increment'})
@@ -540,6 +594,8 @@ const Board = (props) => {
     }
   }
 
+  // Only add cached assets to the DB for XY coordinate owners
+  // that don't have a cached assets entry yet
   const initOwnedCachedAssetsIfEmpty = async () => {
     for (let y = 0; y < MAX_SIZE; y++) {
       for (let x = 0; x < MAX_SIZE; x++) {
@@ -585,12 +641,13 @@ const Board = (props) => {
     for (let i = 0; i < GOT_MAP_TOKEN_IDS.length; i++) {
       const square = squares[GOT_MAP_TOKEN_IDS[i]-1]
       if (square && square.owner && !square.image_uri) {
-        await loadCachedAssets(GOT_MAP_TOKEN_IDS[i]-1, square.owner, true);
+        await placeRandomAsset(GOT_MAP_TOKEN_IDS[i]-1, square.owner, true, false);
       }
     }
   }
 
   // Make sure the board is filled with all the possible tokens
+  // in the shape of the GOT_MAP_TOKEN_IDS map
   // Also delete any duplicates if found
   const placeAllTokens = async () => {
     shuffle(GOT_MAP_TOKEN_IDS)
