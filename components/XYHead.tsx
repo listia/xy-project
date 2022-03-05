@@ -35,6 +35,7 @@ const XYHead = (props) => {
           <Link href="/NFTWorlds">NFT Worlds</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
           <Link href="/Pixelmon">Pixelmon</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
           <Link href="/Metroverse">Metroverse</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
+          <Link href="/KaijuKingz">Kaiju Kingz</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
           more soon...
         </h4>
         </>
