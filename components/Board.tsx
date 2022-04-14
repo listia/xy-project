@@ -756,7 +756,7 @@ const Board = (props) => {
         </div>
       )}
       {!props.contract && !loadingBoard && rows.count == MAX_SIZE && (
-        <div className="text-center space-y-6">
+        <div className="text-center">
           <XYTotalSupply contract={props.contract} handleReload={handleReload} />
         </div>
       )}
