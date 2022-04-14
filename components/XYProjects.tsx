@@ -42,7 +42,7 @@ const XYProjectsTwo = () => {
               </div>
               <div className="flex-1 p-6 flex flex-col justify-between">
                 <div className="flex-1">
-                  <p className="text-xl font-semibold"><Link href={post.href} className="block mt-2">{post.title}</Link></p>
+                  <p className="text-xl font-semibold block mt-2"><Link href={post.href}>{post.title}</Link></p>
                   <p className="mt-3 text-base text-white">{post.description}</p>
                 </div>
               </div>
