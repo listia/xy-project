@@ -21,6 +21,7 @@ const XYTotalSupply = ({ contract, handleReload }) => {
       <h4 className="font-medium">
         Filter the GRID:&nbsp;&nbsp;
         <Link href="/">X,Y Project</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
+        <Link href="/XYWorld">X,Y World</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
         <Link href="/NFTWorlds">NFT Worlds</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
         <Link href="/Metroverse">Metroverse</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;
         <Link href="/KaijuKingz">Kaiju Kingz</Link>&nbsp;&nbsp;&#183;&nbsp;&nbsp;

@@ -67,12 +67,15 @@ function Home() {
       <main className="p-8">
         <div className="flex flex-col items-center space-y-5">
 
-          <XYHead metaverseName={metaverseName} metaverseLink={metaverseLink} />
+          <XYHead metaverse={metaverse} metaverseName={metaverseName} metaverseLink={metaverseLink} />
 
           {isReady && params.length == 0 && (
             <Game />
           )}
-          {isReady && params.length == 1 && (
+          {isReady && params.length == 1 && metaverse == 'XYWorld' && (
+            <Game metaverse={metaverse} />
+          )}
+          {isReady && params.length == 1 && metaverse != 'XYWorld' && (
             <Game contract={METAVERSE[metaverse.toString()].contract} metaverse={metaverse} />
           )}
           {isReady && params.length == 3 && (

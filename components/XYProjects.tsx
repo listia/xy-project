@@ -20,7 +20,7 @@ const XYProjectsTwo = () => {
     },
     {
       title: 'X,Y World',
-      href: 'https://nftworlds.com/play',
+      href: '/XYWorld',
       description:
         'An open world metaverse game built on X,Y Project & NFT Worlds. Land within the game is divided into a 128x128 grid. X,Y owners get exclusive rights to build on the land.',
       imageUrl:

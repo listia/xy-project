@@ -760,46 +760,53 @@ const Board = (props) => {
           <XYTotalSupply contract={props.contract} handleReload={handleReload} />
         </div>
       )}
-      {props.contract && !loadingBoard && rows.count == MAX_SIZE && (
+      {props.contract && !loadingBoard && rows.count == MAX_SIZE && props.metaverse != 'XYWorld' && (
         <div className="text-center space-y-6">
           <EditMetaverse toggleEdit={toggleEdit} edit={router.query.edit} />
         </div>
       )}
-      <div className="flex flex-row space-x-6 items-end justify-center">
-        <div className="flex flex-row space-x-2 items-center">
-          <label htmlFor="zoom" className="block text-sm font-medium">Zoom</label>
-          <select value={selectZoom} onChange={e => setSelectZoom(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
-            <option value="1">1x</option>
-            <option value="2">2x</option>
-            <option value="4">4x</option>
-            <option value="8">8x</option>
-            <option value="16">16x</option>
-          </select>
-        </div>
-        <div className="flex flex-row space-x-2 items-center">
-          <label htmlFor="x" className="block text-sm font-medium">X</label>
-          <select value={selectX} onChange={e => setSelectX(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
-            {xyOptions}
-          </select>
-        </div>
-        <div className="flex flex-row space-x-2 items-center">
-          <label htmlFor="y" className="block text-sm font-medium">Y</label>
-          <select value={selectY} onChange={e => setSelectY(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
-            {xyOptions}
-          </select>
-        </div>
-        <div>
-          <button type="submit" onClick={handleSubmit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600">
-            Zoom!
-          </button>
-        </div>
-      </div>
-      {(props.zoom === undefined || props.zoom === 1) && !props.metaverse && !router.query.live && !router.query.edit && (
-        <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
-          <StaticSquares squares={squares} contract={props.contract} />
+      {props.metaverse != 'XYWorld' && (
+        <div className="flex flex-row space-x-6 items-end justify-center">
+          <div className="flex flex-row space-x-2 items-center">
+            <label htmlFor="zoom" className="block text-sm font-medium">Zoom</label>
+            <select value={selectZoom} onChange={e => setSelectZoom(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+              <option value="1">1x</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+              <option value="8">8x</option>
+              <option value="16">16x</option>
+            </select>
+          </div>
+          <div className="flex flex-row space-x-2 items-center">
+            <label htmlFor="x" className="block text-sm font-medium">X</label>
+            <select value={selectX} onChange={e => setSelectX(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+              {xyOptions}
+            </select>
+          </div>
+          <div className="flex flex-row space-x-2 items-center">
+            <label htmlFor="y" className="block text-sm font-medium">Y</label>
+            <select value={selectY} onChange={e => setSelectY(e.target.value)} className="mt-1 block w-full pl-3 pr-10 py-2 text-bg-black border-gray-300 sm:text-sm rounded-md">
+              {xyOptions}
+            </select>
+          </div>
+          <div>
+            <button type="submit" onClick={handleSubmit} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600">
+              Zoom!
+            </button>
+          </div>
         </div>
       )}
-      {((props.zoom !== undefined && props.zoom !== 1) || props.metaverse || router.query.live === "1" || router.query.edit === "1") && !loadingBoard && (
+      {(props.zoom === undefined || props.zoom === 1) && props.metaverse == 'XYWorld' && (
+        <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
+          <StaticSquares squares={squares} contract={props.contract} image="/images/grid_biomes_XYWorld_1339845309.png" />
+        </div>
+      )}
+      {(props.zoom === undefined || props.zoom === 1) && !props.metaverse && !router.query.live && !router.query.edit && (
+        <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
+          <StaticSquares squares={squares} contract={props.contract} image="https://assets.nfty.dev/xy/the_grid.png" />
+        </div>
+      )}
+      {((props.zoom !== undefined && props.zoom !== 1) || (props.metaverse && props.metaverse != 'XYWorld') || router.query.live === "1" || router.query.edit === "1") && !loadingBoard && (
         <div id="squares" className={`${props.zoom ? 'zoom-'+props.zoom+'x' : 'game-board'} w-11/12 m-auto grid gap-0 cursor-pointer`}>
           <Squares edit={router.query.edit} moving={moving} squares={squares} updatedAt={squaresUpdatedAt} zoom={props.zoom} x={props.x} y={props.y} contract={props.contract} handleToggle={handleToggle} handleMove={handleMove} />
         </div>

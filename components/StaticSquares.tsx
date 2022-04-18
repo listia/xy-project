@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import dynamic from "next/dynamic";
 import Img from 'react-cool-img';
 
-const StaticSquares = ({squares, contract }) => {
+const StaticSquares = ({squares, contract, image }) => {
   // load this dynamically due to: https://github.com/wwayne/react-tooltip/issues/675
   const ReactTooltip = dynamic(() => import("react-tooltip"), {
     ssr: false,
@@ -86,7 +86,7 @@ const StaticSquares = ({squares, contract }) => {
     <>
       <img
         className={`cursor-pointer`}
-        src="https://assets.nfty.dev/xy/the_grid.png"
+        src={image}
         alt="The GRID"
         useMap="#Map"
         ref={imageRef} />
