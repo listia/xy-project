@@ -68,7 +68,7 @@ function Home() {
         <meta property="og:title" content={metaverseName ? metaverseName : "X,Y Project"} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://xyproject.io" />
-        <meta property="og:image" content="http://xyproject.io/images/xyproject.svg" />
+        <meta property="og:image" content="http://xyproject.io/images/xy_world_icon.png" />
         <meta property="og:description" content="X,Y Project is a metaverse gaming platform featuring digital collectible land, avatars and in-game assets." />
       </Head>
 
