@@ -60,6 +60,16 @@ function Home() {
         <title>{metaverseName ? metaverseName : "X,Y Project"}</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+        
+        <meta charSet="UTF-8" />
+        <meta name="keywords" content="XY Project, NFT, NFTs, Metaverse, Gaming, Land, Avatars, Minecraft, NFT Worlds, XY World, XY Squad" />
+        <meta name="description" content="X,Y Project is a metaverse gaming platform featuring digital collectible land, avatars and in-game assets." />
+
+        <meta property="og:title" content={metaverseName ? metaverseName : "X,Y Project"} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://xyproject.io" />
+        <meta property="og:image" content="http://xyproject.io/images/xyproject.svg" />
+        <meta property="og:description" content="X,Y Project is a metaverse gaming platform featuring digital collectible land, avatars and in-game assets." />
       </Head>
 
       <Header triedToEagerConnect={triedToEagerConnect} isConnected={isConnected} />

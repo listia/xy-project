@@ -28,13 +28,13 @@ const XYHead = (props) => {
       {props.metaverseName && props.metaverse == 'XYWorld' && (
         <>
         <section className="text-center">
-          <p>A map of the <b>{props.metaverseName} Metaverse</b> biomes based on the Minecraft Seed for our NFT Worlds #8985!</p>
+          <p>Map of the <b>{props.metaverseName}</b> biomes based on the Minecraft Seed for NFT Worlds #8985! Spawn is at (71,59)</p>
         </section>
         <section className="text-left">
           <ul>
             <li>&#183; <b>X,Y Project owners</b> get exclusive rights to build on their land in-game</li>
             <li>&#183; <b>Want to own a plot?</b> Click the map to buy X,Y coordinates on <a href="https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833" target="_blank" rel="noreferrer">OpenSea</a></li>
-            <li>&#183; <b>Note</b>: in-game land may be different if the previous owner has modified it</li>
+            <li>&#183; <b>Note</b>: in-game land may change if the previous owner has modified it</li>
           </ul>
         </section>
         <section className="text-center">

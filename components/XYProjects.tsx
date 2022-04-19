@@ -4,11 +4,11 @@ const XYProjectsTwo = () => {
   const posts = [
     {
       title: 'X,Y Project (Genesis)',
-      href: 'https://opensea.io/collection/xy-coordinates',
+      href: 'https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833',
       description:
         "A set of 16,384 NFT plots (X,Y Coordinates) stored on-chain, creating a 128x128 GRID. Owners get exclusive access to games, in-game assets & digital land in X,Y World.",
       imageUrl:
-        'https://openseauserdata.com/files/980ed80888257c4f61f6521f5c93f309.svg',
+        '/images/xyproject.svg',
     },
     {
       title: 'X,Y Squad',
