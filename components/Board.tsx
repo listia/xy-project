@@ -797,9 +797,17 @@ const Board = (props) => {
         </div>
       )}
       {(props.zoom === undefined || props.zoom === 1) && props.metaverse == 'XYWorld' && (
+        <>
+        <div className="flex flex-col h-screen">
+          <iframe src="https://map.xyworld.io" className="flex flex-grow"></iframe>
+        </div>
+        <section className="text-center">
+          <p>2D Map of the <b>{props.metaverseName}</b> biomes based on the Minecraft Seed for NFT Worlds #8985</p>
+        </section>
         <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
           <StaticSquares squares={squares} contract={props.contract} image="/images/grid_biomes_XYWorld_1339845309.png" />
         </div>
+        </>
       )}
       {(props.zoom === undefined || props.zoom === 1) && !props.metaverse && !router.query.live && !router.query.edit && (
         <div id="squares" className={`game-board w-11/12 m-auto gap-0 cursor-pointer`}>
