@@ -31,7 +31,7 @@ const XYHead = (props) => {
           <ul>
             <li>&#183; <b>X,Y Project owners</b> get exclusive rights to build on their land in-game</li>
             <li>&#183; <b>Want to own a plot?</b> Check the map for <a href="https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833" target="_blank" rel="noreferrer">X,Y coordinates to buy on OpenSea</a></li>
-            <li>&#183; <b>Note</b>: map updated daily, in-game land may change, grid lines at "sea level"</li>
+            <li>&#183; <b>Note</b>: map updated daily, in-game land may change, grid lines at &quot;sea level&quot;</li>
           </ul>
         </section>
         <section className="text-center">
