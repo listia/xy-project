@@ -14,7 +14,7 @@ const XYProjectsTwo = () => {
       title: 'X,Y Squad',
       href: '#',
       description:
-        'Coming Soon! A set of collectible NFT avatars with unique attributes that can be used in-game, starting with X,Y World. FREE mint exclusively for X,Y Project owners.',
+        'Coming soon... a set of wrappable, extendable, customizable NFT avatars with unique on-chain attributes. Playable in-game, starting with X,Y World and Minecraft.',
       imageUrl:
         '/images/xysquad.png',
     },
