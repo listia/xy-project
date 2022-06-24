@@ -14,7 +14,7 @@ function Footer() {
         Ownership data is cached and pulled directly from the public Ethereum blockchain.
         All information on this website is provided &quot;AS IS&quot;.
         The website is open source, free to use and makes no warranties, express, implied or otherwise, regarding its accuracy, completeness or performance.
-        Enjoy the X,Y Project and drop us a line on <a href="https://twitter.com/XYCoordinates" target="_blank"rel=" noreferrer">Twitter</a> or <a href="https://discord.com/invite/zBWEsfufPZ" target="_blank" rel="noreferrer">Discord</a> if you have any questions!
+        Enjoy the X,Y Project and drop us a line on <a href="https://twitter.com/XYCoordinates" target="_blank"rel=" noreferrer">Twitter</a> or <a href="https://discord.gg/NKQBHNtyat" target="_blank" rel="noreferrer">Discord</a> if you have any questions!
       </p>
     </>
   );
