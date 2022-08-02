@@ -56,7 +56,7 @@ export default async (req, res) => {
                            "address": asset.asset_contract.address})
             }
           });
-          if(response.data.assets.length < MAX_ASSETS){
+          if(response.data.assets.length < MAX_ASSETS || offset > 500){ // MAX out at 500 for now
             flag = false;
           }
           else {

@@ -42,7 +42,7 @@ export default async (req, res) => {
                   pageKey: pageKey ? pageKey : null }
       }).then((response) => {
         console.log("getAssets pageKey:" + pageKey);
-        if(response.data.ownedNfts.length === 0){
+        if (response.data.ownedNfts.length === 0){
             flag = false;
         }
         else {
