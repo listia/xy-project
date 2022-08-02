@@ -32,7 +32,13 @@ function Login() {
         signature: signature
       },
     }).then((response) => {
-      setLoginCode(response.data.code)
+      // @ts-ignore
+      if (response && response.data && response.data.code) {
+        // @ts-ignore
+        setLoginCode(response.data.code)
+      } else {
+        setLoginCode("Unable to get login code. Please try again.")
+      }
     }).catch(error => {
       setLoginCode("Unable to get login code. Please try again.")
     })
