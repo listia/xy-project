@@ -39,7 +39,7 @@ export default async (req, res) => {
     }
 
     const code = signature.substring(2,12)
-    updateLoginCode(address, code)
+    await updateLoginCode(address, code)
 
     res.status(200).json({ code: code })
   }
