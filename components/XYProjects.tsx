@@ -6,25 +6,25 @@ const XYProjectsTwo = () => {
       title: 'X,Y Project (Genesis)',
       href: 'https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833',
       description:
-        "A set of 16,384 NFT plots (X,Y Coordinates) stored on-chain, creating a 128x128 GRID. Owners get exclusive access to games, in-game assets & digital land in X,Y World.",
+        "A set of 16,384 NFT plots (X,Y Coordinates) stored on-chain, creating a 128x128 GRID. Owners get exclusive access to building games on the platform & digital land in X,Y World.",
       imageUrl:
         '/images/xyproject.svg',
     },
     {
-      title: 'X,Y Squad',
-      href: '#',
-      description:
-        'Coming soon... a set of wrappable, extendable, customizable NFT avatars with unique on-chain attributes. Playable in-game, starting with X,Y World and Minecraft.',
-      imageUrl:
-        '/images/xysquad.png',
-    },
-    {
-      title: 'X,Y World',
+      title: 'X,Y World (Live)',
       href: '/XYWorld',
       description:
-        'An open world metaverse game built on X,Y Project & NFT Worlds. Land within the game is divided into a 128x128 grid. X,Y owners get exclusive rights to build on the land.',
+        'The first open world metaverse game built on X,Y Project. In-game land is divided into the X,Y Project GRID. Owners get exclusive rights to build on their plots - <a href="/XYWorld">view map & play free</a>',
       imageUrl:
-        '/images/xyworld.png',
+        '/images/xyworld2.png',
+    },
+    {
+      title: 'X,Y Multiverse',
+      href: '#',
+      description:
+        'Coming soon... build your own metaverse experience with the X,Y Project web3 gaming platform. Integrate any NFTs as in-game assets, playable avatars, or community token gating.',
+      imageUrl:
+        '/images/xyverse.png',
     },
   ]
 
@@ -38,12 +38,14 @@ const XYProjectsTwo = () => {
           {posts.map((post) => (
             <div key={post.title} className="flex flex-col overflow-hidden">
               <div className="flex-shrink-0">
-                <img className="h-48 w-full object-cover rounded-lg" src={post.imageUrl} alt="" />
+                <Link href={post.href}>
+                  <img className="h-48 w-full object-cover rounded-lg" src={post.imageUrl} alt="" />
+                </Link>
               </div>
               <div className="flex-1 p-6 flex flex-col justify-between">
                 <div className="flex-1">
                   <p className="text-xl font-semibold block mt-2"><Link href={post.href}>{post.title}</Link></p>
-                  <p className="mt-3 text-base text-white">{post.description}</p>
+                  <p className="mt-3 text-base text-white" dangerouslySetInnerHTML={{__html: post.description}}></p>
                 </div>
               </div>
             </div>
