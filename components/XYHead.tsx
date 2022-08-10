@@ -38,7 +38,7 @@ const XYHead = (props) => {
         <>
         <section className="text-left">
           <ul>
-            <li>&#183; <b>X,Y Project owners</b> can build on their land. <a href="/login">Connect your wallet</a></li>
+            <li>&#183; <b>X,Y Project owners</b> can build on their land. <Link href="/login" passHref>Connect your wallet</Link></li>
             <li>&#183; <b>Want to own a plot?</b> <a href="https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833" target="_blank" rel="noreferrer">Find X,Y Coordinates to buy on OpenSea</a></li>
           </ul>
         </section>
