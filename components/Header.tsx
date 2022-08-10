@@ -61,11 +61,20 @@ const Header = (props) => {
       </div>
       <nav className="flex-grow">
         <div className="flex justify-end">
-          <Link href="/XYWorld" passHref>
-            <button className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-500 hover:bg-blue-600 text-white">
-              Play X,Y World
-            </button>
-          </Link>
+          {props.metaverse == 'XYWorld' && (
+            <Link href="/login" passHref>
+              <button className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-500 hover:bg-blue-600 text-white">
+                X,Y World Login
+              </button>
+            </Link>
+          )}
+          {props.metaverse != 'XYWorld' && (
+            <Link href="/XYWorld" passHref>
+              <button className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-500 hover:bg-blue-600 text-white">
+                Play X,Y World
+              </button>
+            </Link>
+          )}
           &nbsp; &nbsp;
           {props.isConnected ? (
             <Menu as="div" className="relative inline-block text-left">

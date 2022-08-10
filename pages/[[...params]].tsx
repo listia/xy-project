@@ -72,7 +72,7 @@ function Home() {
         <meta property="og:description" content="X,Y Project is a metaverse gaming platform featuring digital collectible land, avatars and in-game assets." />
       </Head>
 
-      <Header triedToEagerConnect={triedToEagerConnect} isConnected={isConnected} />
+      <Header triedToEagerConnect={triedToEagerConnect} isConnected={isConnected} metaverse={metaverse} />
 
       <main className="p-8">
         <div className="flex flex-col items-center space-y-5">

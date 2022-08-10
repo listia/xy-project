@@ -38,12 +38,12 @@ const XYHead = (props) => {
         <>
         <section className="text-left">
           <ul>
-            <li>&#183; <b>X,Y Project owners</b> can build and customize their land in-game</li>
+            <li>&#183; <b>X,Y Project owners</b> can build on their land. <a href="/login">Connect your wallet</a></li>
             <li>&#183; <b>Want to own a plot?</b> <a href="https://opensea.io/collection/xy-coordinates?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833" target="_blank" rel="noreferrer">Find X,Y Coordinates to buy on OpenSea</a></li>
           </ul>
         </section>
         <section className="text-center">
-          <p><b>Free-To-Play</b>: Connect to <b className="text-green-400">mt.xyworld.io:30000</b> from a compatible <a href="https://www.minetest.net/downloads/" target="_blank" rel="noreferrer">Minetest</a> or <a href="https://www.minetest.net/downloads/" target="_blank" rel="noreferrer">Multicraft</a> client</p>
+          <p><b>Free-To-Play</b>: Connect to <b className="text-green-400">mt.xyworld.io:30000</b> from a compatible <a href="https://www.minetest.net/downloads/" target="_blank" rel="noreferrer">Minetest</a> or <a href="https://multicraft.world" target="_blank" rel="noreferrer">Multicraft</a> client</p>
           <p>Available on PC, Linux, Mac, Android & iOS devices</p>
           <p>(click here for the legacy <a href="https://map.xyworld.io">Minecraft map</a>)</p>
         </section>
