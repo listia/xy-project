@@ -1,7 +1,7 @@
 import useXYWorldContract from "../hooks/useXYWorldContract";
 import { XYWorldContractAddress } from "../util";
 import useSWR from "swr";
-import type { XYWORLD } from "../contracts/types";
+import type { XYWorld } from "../contracts/types";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
 
 export default function useXYWorldBatchPresaleMint() {

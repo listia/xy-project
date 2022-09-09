@@ -51,6 +51,7 @@ function Login() {
             <section className="text-center">
               <p className="text-3xl font-bold">The X,Y World Allowlist Mint is LIVE!</p>
               {isReady && isConnected && (
+                
                 <XYWorldMint />
               )}
               {isReady && !isConnected && (

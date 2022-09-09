@@ -19,7 +19,7 @@ import { Dialog, Transition } from '@headlessui/react'
 
 
 
-const XYWorldMint = ({ contract, handleReload }) => {
+const XYWorldMint = () => {
   const { account, library } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
 
@@ -36,6 +36,7 @@ const XYWorldMint = ({ contract, handleReload }) => {
     var level = 1; // only limited editions in this phase
 
     try {
+      // @ts-ignore
       var selectedItems = multiSelectRef.current.getSelectedItems();
       if (selectedItems && selectedItems.length > 0) {
         selectedItems.map((option) => {
@@ -86,6 +87,7 @@ const XYWorldMint = ({ contract, handleReload }) => {
       }).then((response) => {
         // @ts-ignore
         if (response.data.assets) {
+          // @ts-ignore
           assets = response.data.assets;
         }
       }).catch(error => {
@@ -112,6 +114,7 @@ const XYWorldMint = ({ contract, handleReload }) => {
       }).then((response) => {
         // @ts-ignore
         if (response.data.proof) {
+          // @ts-ignore
           proof = response.data.proof;
         }
       }).catch(error => {
@@ -153,11 +156,11 @@ const XYWorldMint = ({ contract, handleReload }) => {
       name: '2,500 Limited Edition',
       description: 'A maximum of 2,500 Limited Edition X,Y World NFTs are available',
     },
-    { name: 'Sept. 10th 16:00 UTC', description: 'Allowlist-only until Sept. 10th 16:00 UTC' },
-    { name: 'Price: 0.05 ETH', description: 'Limited Edition Price is 0.05 ETH. Free Base Editions will be available a few days after the Public Sale starts.' },
+    { name: 'Sept. 9th 16:00 UTC', description: 'Allowlist-only for the first 24 hours. Public Sale starts Sept. 10th 16:00 UTC' },
+    { name: 'Price: 0.05 ETH', description: 'Limited Edition Price is 0.05 ETH. Free Base Editions will be available a few days after Public Sale starts.' },
     {
       name: 'X,Y Project Owners',
-      description: 'Only <a href="https://opensea.io/collection/xy-coordinates">X,Y Project</a> owners can mint. Your wallet X,Y Coordinates will show up below.',
+      description: 'Only <a href="https://opensea.io/collection/xy-coordinates" target="_blank" rel="noreferrer">X,Y Project</a> owners can mint. Your wallet X,Y Coordinates will show up in the box below.',
     },
   ]
 
@@ -188,11 +191,13 @@ const XYWorldMint = ({ contract, handleReload }) => {
             <p>Choose up to 10 of your Coordinates to Mint at a time, limit 20 for allowlist mint ({LIMITED_EDITION_MAX - xyWorldAssetsCount} remaining):<br/></p>
             <Multiselect
             options={multiSelectOptions.options} // Options to display in the dropdown
+            // @ts-ignore
             selectedValues={multiSelectOptions.selectedValue} // Preselected value to persist in dropdown
             displayValue="name" // Property name to display in the dropdown options
             selectionLimit={LIMITED_EDITION_MAX - xyWorldAssetsCount < 10 ? 1 : 10}
             placeholder="Click to Select X,Y Coordinates"
             className="text-black"
+            // @ts-ignore
             ref={multiSelectRef}
             />
             <br/><br/>
@@ -222,9 +227,9 @@ const XYWorldMint = ({ contract, handleReload }) => {
       <br/>
       By minting, you agree to the following:
       <ul>
-        <li>- X,Y World is an <a href="https://medium.com/@xyproject/associative-nfts-be3f1a69dbdc">Associative NFT</a> that automatically updates as you build on your land in-game.</li>
-        <li>- After mint, your X,Y World is linked to your X,Y Coordinate. It goes wherever your Coordinate goes.</li>
-        <li>- This means X,Y World NFTs are transferrable, but only if you sell your linked X,Y Coordinate.</li>
+        <li>· X,Y World is an <a href="https://medium.com/@xyproject/associative-nfts-be3f1a69dbdc" target="_blank" rel="noreferrer">Associative NFT</a> that automatically updates as you build on your land in-game.</li>
+        <li>· After mint, your X,Y World is linked to your X,Y Coordinate. It goes wherever your Coordinate goes.</li>
+        <li>· This means X,Y World NFTs are transferrable, but only if you sell your linked X,Y Coordinate.</li>
       </ul>
 
       <div className="text-center">
@@ -251,62 +256,6 @@ const XYWorldMint = ({ contract, handleReload }) => {
         </div>
       </div>
     </div>
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <div>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
-                  </div>
-                  <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                      Transaction sent
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Be sure to verify your transaction on the blockchain. Allowlist wallets are allowed to mint up to {LIMITED_EDITION_MAX} before the public mint.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-5 sm:mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none sm:text-sm"
-                    onClick={() => setOpen(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition.Root>
     </>
   );
 };

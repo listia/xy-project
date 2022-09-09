@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// TODO: CHANGE BACK TO DEFAULT< PRODUCTION URLS
 export default async (req, res) => {
   const MAX_ASSETS = 50;
-  const openseaAssetURL = "https://testnets-api.opensea.io/api/v1/assets" + (req.query.contract ? "" : "?order_direction=desc&order_by=sale_count")
+  const openseaAssetURL = "https://api.opensea.io/api/v1/assets" + (req.query.contract ? "" : "?order_direction=desc&order_by=sale_count")
   console.log("getAssets from opensea: " + JSON.stringify(req.query, null, 2))
   if (req.method == 'GET' && req.query.owner) {
     console.log("getting Assets from opensea...");
@@ -18,7 +17,7 @@ export default async (req, res) => {
                   limit: MAX_ASSETS,
                   offset: offset,
                   asset_contract_address: req.query.contract ? req.query.contract : "" },
-        headers: {'X-API-KEY': ""}
+        headers: {'X-API-KEY': process.env.OPENSEA_API_KEY ? process.env.OPENSEA_API_KEY : ""}
       }).then((response) => {
         console.log("getAssets offset:" + offset);
         if(response.data.assets.length === 0){

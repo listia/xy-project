@@ -5,11 +5,11 @@ const RINKEBY_CONTRACT="0xB040Fb7475650Ec41d15f5df2d723096968BB7ce";
 const MAINNET_CONTRACT="0x3CA53BE299C765cDC66cC1723F8B3EEFB3aAa413";
 
 const XYWORLD_RINKEBY_CONTRACT="0x77314eD27CcDb3A3bE1833322eEAcf2a3b6d4D96";
-const XYWORLD_MAINNET_CONTRACT="";
+const XYWORLD_MAINNET_CONTRACT="0xc30291a8e962C6970314C8c3c14450ddF728C6c0";
 
 // TODO: change this back to production before deploy
-export const XYContractAddress = RINKEBY_CONTRACT;
-export const XYWorldContractAddress = XYWORLD_RINKEBY_CONTRACT;
+export const XYContractAddress = MAINNET_CONTRACT;
+export const XYWorldContractAddress = XYWORLD_MAINNET_CONTRACT;
 export const MAX_SIZE = 128;
 
 export function shortenHex(hex: string, length = 4) {
