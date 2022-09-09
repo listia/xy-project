@@ -116,6 +116,20 @@
     },
     {
       "inputs": [],
+      "name": "PROVENANCE",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
       "name": "TOTAL_TOKENS",
       "outputs": [
         {
@@ -353,6 +367,48 @@
       "constant": true
     },
     {
+      "inputs": [],
+      "name": "startingIndexBase",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "startingIndexBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "startingIndexLimited",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes4",
@@ -475,11 +531,6 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "allowed",
-          "type": "uint256"
-        },
-        {
           "internalType": "bytes32[]",
           "name": "proof",
           "type": "bytes32[]"
@@ -520,11 +571,6 @@
         {
           "internalType": "uint256",
           "name": "level",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "allowed",
           "type": "uint256"
         },
         {
@@ -621,6 +667,40 @@
     {
       "inputs": [],
       "name": "stopSale",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "provenanceHash",
+          "type": "string"
+        }
+      ],
+      "name": "setProvenanceHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "setStartingIndexBlock",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "setStartingIndexBase",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "setStartingIndexLimited",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

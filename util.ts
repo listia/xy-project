@@ -4,9 +4,10 @@ import { formatUnits } from "@ethersproject/units";
 const RINKEBY_CONTRACT="0xB040Fb7475650Ec41d15f5df2d723096968BB7ce";
 const MAINNET_CONTRACT="0x3CA53BE299C765cDC66cC1723F8B3EEFB3aAa413";
 
-const XYWORLD_RINKEBY_CONTRACT="0xE1B307811b45387856420A257117443734603038";
+const XYWORLD_RINKEBY_CONTRACT="0x77314eD27CcDb3A3bE1833322eEAcf2a3b6d4D96";
 const XYWORLD_MAINNET_CONTRACT="";
 
+// TODO: change this back to production before deploy
 export const XYContractAddress = RINKEBY_CONTRACT;
 export const XYWorldContractAddress = XYWORLD_RINKEBY_CONTRACT;
 export const MAX_SIZE = 128;

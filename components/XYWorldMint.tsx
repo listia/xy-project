@@ -39,10 +39,14 @@ const XYWorldMint = ({ contract, handleReload }) => {
         const price = (LIMITED_EDITION_PRICE * tokenIds.length).toFixed(2);
         const wei_price = web3.utils.toWei(price.toString(), "ether");
 
-        if (tokenIds.length == 1) {
-          await mint(tokenIds[0], level, wei_price);
-        } else if (tokenIds.length > 1) {
-          await batchMint(tokenIds, level, wei_price);
+        const proof = await fetchProof();
+
+        if (proof && proof.length > 0 && tokenIds.length == 1) {
+          await mint(tokenIds[0], level, proof, wei_price);
+        } else if (proof && proof.length > 0 && tokenIds.length > 1) {
+          await batchMint(tokenIds, level, proof, wei_price);
+        } else if (!proof || proof.length == 0) {
+          alert("Could not find your address on the allowlist. Please try another wallet or come back during the public sale. Thank you!");
         }
       }
     } catch (error) {
@@ -83,6 +87,32 @@ const XYWorldMint = ({ contract, handleReload }) => {
     }
 
     return assets;
+  }
+
+  const getProofURL = '/api/mint/getProof';
+
+  const fetchProof = async () => {
+    var proof = [];
+    if (isConnected && account) {
+      const interceptorId = rax.attach(); // retry logic for axios
+      await axios({
+        method: 'GET',
+        url: getProofURL,
+        params: { address: account },
+        raxConfig: {
+          retry: 2
+        }
+      }).then((response) => {
+        // @ts-ignore
+        if (response.data.proof) {
+          proof = response.data.proof;
+        }
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+
+    return proof;
   }
 
   const populateMultiSelect = async () => {
