@@ -8,7 +8,7 @@ function Footer() {
         X,Y Project is a fun, community-focused metaverse NFT project.
         Please feel free to use it in any way you want.
         For example: maps, tiles, locations, games, virtual worlds, and more.
-        Claim X,Y Coordinates, issue blockchain transactions, and use the NFTs at your own risk.
+        Claim X,Y Coordinates, mint X,Y World, issue blockchain transactions, and use the NFTs at your own risk.
         Full website functionality requries Metamask or a similar wallet plugin.
         We do not track or store your information.
         Ownership data is cached and pulled directly from the public Ethereum blockchain.

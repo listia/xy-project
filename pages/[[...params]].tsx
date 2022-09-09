@@ -76,7 +76,6 @@ function Home() {
 
       <main className="p-8">
         <div className="flex flex-col items-center space-y-5">
-
           <XYHead metaverse={metaverse} metaverseName={metaverseName} metaverseLink={metaverseLink} />
 
           {isReady && params.length == 0 && (

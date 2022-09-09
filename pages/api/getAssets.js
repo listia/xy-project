@@ -40,6 +40,7 @@ export default async (req, res) => {
         }
       }).catch(error => {
         console.log(error);
+        flag = false;
       })
     }
     res.status(200).json({ assets: assets });
