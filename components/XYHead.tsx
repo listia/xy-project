@@ -4,6 +4,19 @@ import XYProjects from "./XYProjects";
 const XYHead = (props) => {
   return (
     <>
+      <div className="bg-white shadow sm:rounded-lg mb-6">
+        <div className="sm:flex sm:flex-shrink-0 sm:items-center">
+          <Link href="/mint">
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md border border-transparent bg-og-green px-4 py-2 font-xl text-white shadow-sm hover:bg-og-green-dark focus:outline-none sm:text-xl"
+            >
+              The X,Y World Mint is LIVE!
+            </button>
+          </Link>
+        </div>
+      </div>
+
       {props.metaverseName && (
         <>
           <h1 className="text-2xl font-bold">

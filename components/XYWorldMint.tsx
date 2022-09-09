@@ -201,7 +201,7 @@ const XYWorldMint = () => {
             ref={multiSelectRef}
             />
             <br/><br/>
-            <button className="bg-og-green hover:bg-og-green-dark text-white text-x\l font-medium py-2 px-4 rounded" onClick={() => handleMint()}>
+            <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-2 px-4 rounded" onClick={() => handleMint()}>
               Mint your selected Limited Edition X,Y World Plots!
             </button>
             <ETHBalance />
