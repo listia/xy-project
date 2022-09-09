@@ -23,17 +23,40 @@ const XYWorldMint = () => {
   const { account, library } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
 
-  const mint = useXYWorldPresaleMint(); // useXYWorldMint();
-  const batchMint = useXYWorldBatchPresaleMint(); // useXYWorldBatchMint();
+  const mint = useXYWorldMint();
+  const batchMint = useXYWorldBatchMint();
   const [xyWorldAssetsCount, setxyWorldAssetsCount] = useState(0);
   const [open, setOpen] = useState(false)
 
   const LIMITED_EDITION_PRICE = 0.05;
-  const LIMITED_EDITION_MAX = 20;
 
-  const handleMint = async () => {
+  const handleBaseMint = async () => {
     var tokenIds = [];
-    var level = 1; // only limited editions in this phase
+    var level = 0; // base edition
+
+    try {
+      // @ts-ignore
+      var selectedItems = multiSelectRef.current.getSelectedItems();
+      if (selectedItems && selectedItems.length > 0) {
+        selectedItems.map((option) => {
+          tokenIds.push(parseInt(option.id));
+        })
+
+        if (tokenIds.length == 1) {
+          await mint(tokenIds[0], level, 0);
+        } else if (tokenIds.length > 1) {
+          await batchMint(tokenIds, level, 0);
+        }
+      }
+    } catch (error) {
+      // Do nothing
+      console.log(error);
+    }
+  }
+
+  const handleLimitedMint = async () => {
+    var tokenIds = [];
+    var level = 1; // limited edition
 
     try {
       // @ts-ignore
@@ -47,14 +70,10 @@ const XYWorldMint = () => {
         const price = (LIMITED_EDITION_PRICE * tokenIds.length).toFixed(2);
         const wei_price = web3.utils.toWei(price.toString(), "ether");
 
-        const proof = await fetchProof();
-
-        if (proof && proof.length > 0 && tokenIds.length == 1) {
-          await mint(tokenIds[0], level, proof, wei_price);
-        } else if (proof && proof.length > 0 && tokenIds.length > 1) {
-          await batchMint(tokenIds, level, proof, wei_price);
-        } else if (!proof || proof.length == 0) {
-          alert("Could not find your address on the allowlist. Please try another wallet or come back during the public sale. Thank you!");
+        if (tokenIds.length == 1) {
+          await mint(tokenIds[0], level, wei_price);
+        } else if (tokenIds.length > 1) {
+          await batchMint(tokenIds, level, wei_price);
         }
       }
     } catch (error) {
@@ -154,13 +173,13 @@ const XYWorldMint = () => {
   const features = [
     {
       name: '2,500 Limited Edition',
-      description: 'A maximum of 2,500 Limited Edition X,Y World NFTs are available',
+      description: 'Mint Limited Edition X,Y World NFTs with rare traits, attributes, textures & colors',
     },
-    { name: 'Sept. 9th 16:00 UTC', description: 'Allowlist-only for the first 24 hours. Public Sale starts Sept. 10th 16:00 UTC' },
-    { name: 'Price: 0.05 ETH', description: 'Limited Edition Price is 0.05 ETH. Free Base Editions will be available a few days after Public Sale starts.' },
+    { name: 'Dynamic NFT Land', description: 'Automatically updates as you build & customize your plot in the X,Y World game' },
+    { name: 'Price: 0.05 ETH / Free', description: 'Add value to your X,Y by linking Limited Edition NFTs or mint free Base Editions' },
     {
-      name: 'X,Y Project Owners',
-      description: 'Only <a href="https://opensea.io/collection/xy-coordinates" target="_blank" rel="noreferrer">X,Y Project</a> owners can mint. Your wallet X,Y Coordinates will show up in the box below.',
+      name: 'Associative NFT',
+      description: 'Exclusively for <a href="https://opensea.io/collection/xy-coordinates" target="_blank" rel="noreferrer">X,Y Project</a> owners - attach land to your on-chain Coordinates',
     },
   ]
 
@@ -186,24 +205,31 @@ const XYWorldMint = () => {
 
       {isConnected && (
         <>
-        {xyWorldAssetsCount < LIMITED_EDITION_MAX && (
           <div className="text-center">
-            <p>Choose up to 10 of your Coordinates to Mint at a time, limit 20 for allowlist mint ({LIMITED_EDITION_MAX - xyWorldAssetsCount} remaining):<br/></p>
+            <p>Choose up to 10 of your Coordinates to Mint at a time:<br/></p>
             <Multiselect
             options={multiSelectOptions.options} // Options to display in the dropdown
             // @ts-ignore
             selectedValues={multiSelectOptions.selectedValue} // Preselected value to persist in dropdown
             displayValue="name" // Property name to display in the dropdown options
-            selectionLimit={LIMITED_EDITION_MAX - xyWorldAssetsCount < 10 ? 1 : 10}
+            selectionLimit={10}
             placeholder="Click to Select X,Y Coordinates"
             className="text-black"
             // @ts-ignore
             ref={multiSelectRef}
             />
             <br/><br/>
-            <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-2 px-4 rounded" onClick={() => handleMint()}>
-              Mint your selected Limited Edition X,Y World Plots!
+            <button className="bg-gray-500 hover:bg-gray-600 text-white text-xl font-medium py-2 px-4 rounded" onClick={() => handleBaseMint()}>
+              Mint Base Edition X,Y World
             </button>
+            &nbsp;&nbsp;&nbsp;
+            <button className="bg-og-green hover:bg-og-green-dark text-white text-xl font-medium py-2 px-4 rounded" onClick={() => handleLimitedMint()}>
+              Mint Limited Edition X,Y World Plots!
+            </button>
+            <br/><br/>
+            <p>
+              Base Edition Price: Free &nbsp;|&nbsp; Limited Edition Price: <b>0.05 ETH</b>
+            </p>
             <ETHBalance />
             {xyWorldAssetsCount > 0 && (
               <p>
@@ -211,12 +237,6 @@ const XYWorldMint = () => {
               </p>
             )}
           </div>
-        )}
-        {xyWorldAssetsCount >= LIMITED_EDITION_MAX && (
-          <div className="text-center">
-            <p><b>You have minted {LIMITED_EDITION_MAX} X,Y World Associative NFTs which is the maximum for the allowlist mint.</b></p>
-          </div>
-        )}
         </>
       )}
       {!isConnected && (
@@ -292,7 +312,7 @@ const XYWorldMint = () => {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Be sure to verify your transaction on the blockchain. Allowlist wallets are allowed to mint up to {LIMITED_EDITION_MAX} before the public mint.
+                        Be sure to verify your transaction on the blockchain.
                       </p>
                     </div>
                   </div>
