@@ -252,27 +252,61 @@ const XYWorldMint = () => {
         <li>· This means X,Y World NFTs are transferrable, but only if you sell your linked X,Y Coordinate.</li>
       </ul>
 
-      <div className="text-center">
-        <div className="mx-auto max-w-6xl py-4 px-4 sm:px-6 lg:py-8 lg:px-8">
-          <dl className="space-y-10 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+      <div className="bg-gray-200 shadow sm:rounded-lg my-8">
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Limited Edition Samples</h3>
+          <div className="text-center">
+            <div className="mx-auto max-w-6xl py-4 px-4 sm:px-6 lg:py-8 lg:px-8">
+              <dl className="space-y-10 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
 
-            <div className="relative">
-              <img className="mx-auto" src="images/xyw_sample_1.png" />
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_sample_1.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_sample_2.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_sample_3.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_sample_4.png" />
+                </div>
+
+              </dl>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="relative">
-              <img className="mx-auto" src="images/xyw_sample_2.png" />
+      <div className="bg-gray-200 shadow sm:rounded-lg my-8">
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Base Edition Samples</h3>
+          <div className="text-center">
+            <div className="mx-auto max-w-6xl py-4 px-4 sm:px-6 lg:py-8 lg:px-8">
+              <dl className="space-y-10 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_basic_sample_1.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_basic_sample_2.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_basic_sample_3.png" />
+                </div>
+
+                <div className="relative">
+                  <img className="mx-auto" src="images/xyw_basic_sample_4.png" />
+                </div>
+
+              </dl>
             </div>
-
-            <div className="relative">
-              <img className="mx-auto" src="images/xyw_sample_3.png" />
-            </div>
-
-            <div className="relative">
-              <img className="mx-auto" src="images/xyw_sample_4.png" />
-            </div>
-
-          </dl>
+          </div>
         </div>
       </div>
     </div>
