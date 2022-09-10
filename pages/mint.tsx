@@ -27,7 +27,7 @@ function Login() {
   return (
     <div>
       <Head>
-        <title>X,Y Project: Mint X,Y World Associative NFT</title>
+        <title>X,Y Project: Mint X,Y World Associative NFT Land</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         
@@ -49,7 +49,7 @@ function Login() {
 
           <div className="w-full flex flex-col items-center">
             <section className="text-center">
-              <p className="text-3xl font-bold">The X,Y World Allowlist Mint is LIVE!</p>
+              <p className="text-4xl font-bold">The X,Y World Mint is LIVE!</p>
               {isReady && isConnected && (
                 
                 <XYWorldMint />
