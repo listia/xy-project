@@ -11,7 +11,7 @@ const XYProjectsTwo = () => {
         '/images/xyproject.svg',
     },
     {
-      title: 'X,Y World (Live)',
+      title: 'X,Y World (Live Game)',
       href: '/XYWorld',
       description:
         'The first open world metaverse game built on X,Y Project. In-game land is divided into the X,Y Project GRID. Owners get exclusive rights to build on their plots - <a href="/XYWorld">view map & play free</a>',
@@ -19,12 +19,12 @@ const XYProjectsTwo = () => {
         '/images/xyworld2.png',
     },
     {
-      title: 'X,Y Multiverse',
-      href: '#',
+      title: 'X,Y World (Associative NFT)',
+      href: 'https://opensea.io/collection/xyworld?ref=0xe3Ca71F5D505937959893CdEFd2704f062E14833',
       description:
-        'Coming soon... build your own metaverse experience with the X,Y Project web3 gaming platform. Integrate any NFTs as in-game assets, playable avatars, or community token gating.',
+        'X,Y World is an Associative NFT that automatically updates as you build on your land in-game. Buildings you create & changes you make in-game will show up automatically.',
       imageUrl:
-        '/images/xyverse.png',
+        '/images/xyworldnft.png',
     },
   ]
 

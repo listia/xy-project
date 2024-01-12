@@ -58,15 +58,13 @@ const XYHead = (props) => {
         <section className="text-center">
           <p><b>Free-To-Play</b>: Connect to <b className="text-green-400">mt.xyworld.io:30000</b> from a compatible <a href="https://www.minetest.net/downloads/" target="_blank" rel="noreferrer">Minetest</a> or <a href="https://multicraft.world" target="_blank" rel="noreferrer">Multicraft</a> client</p>
           <p>Available on PC, Linux, Mac, Android & iOS devices</p>
-          <p>(click here for the legacy <a href="https://map.xyworld.io">Minecraft map</a>)</p>
         </section>
         </>
       )}
       {!props.metaverseName && (
         <>
         <section className="text-center">
-          <p className="text-5xl font-bold">Open-Source Web3 Gaming Platform</p>
-          <p className="text-xl pt-3">create your own metaverse game - integrate digital assets and avatars</p>
+          <p><b>X,Y Project</b> is a set of on-chain NFT Plots (X,Y Coordinates) representing a 128x128 GRID.</p>
           <XYProjects/>
         </section>
         </>
